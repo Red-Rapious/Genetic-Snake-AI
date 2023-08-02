@@ -5,7 +5,7 @@ pub struct Games {
 }
 
 impl Games {
-    pub fn new(fields: usize, width: usize, height: usize) -> Self {
+    pub fn new(fields: u32, width: u32, height: u32) -> Self {
         let games = (0..fields).map(|_| Game::new(width, height)).collect();
 
         Self { games }
@@ -17,13 +17,13 @@ impl Games {
 }
 
 pub struct Game {
-    width: usize,
-    height: usize,
-    snake: Vec<(usize, usize)>
+    width: u32,
+    height: u32,
+    snake: Vec<(u32, u32)>
 }
 
 impl Game {
-    pub fn new(width: usize, height: usize) -> Self {
+    pub fn new(width: u32, height: u32) -> Self {
         let mut rng = rand::thread_rng();
 
         Self {
@@ -34,15 +34,15 @@ impl Game {
         }
     }
 
-    pub fn width(&self) -> usize {
+    pub fn width(&self) -> u32 {
         self.width
     }
 
-    pub fn height(&self) -> usize {
+    pub fn height(&self) -> u32 {
         self.height
     }
 
-    pub fn snake(&self) -> &Vec<(usize, usize)> {
+    pub fn snake(&self) -> &Vec<(u32, u32)> {
         &self.snake
     }
 }
