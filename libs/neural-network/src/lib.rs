@@ -5,38 +5,37 @@ use rand::Rng;
 use crate::activation_function::*;
 
 pub mod activation_function;
+mod tests;
 
 pub struct NeuralNetwork {
-    layers: Vec<usize>,
     weights: Vec<na::DMatrix<f32>>,
     biases: Vec<na::DVector<f32>>,
     activation_function: ActivationFunction
 }
 
 impl NeuralNetwork {
-    fn random(layers: Vec<usize>, activation_function: ActivationFunction) -> Self {
+    fn random(layers: &Vec<usize>, activation_function: ActivationFunction) -> Self {
         assert!(layers.len() > 1);
 
         let weights = layers
             .windows(2)
-            .map(|dimensions| 
+            .map(|shape| 
                 DMatrix::from_fn(
-                    dimensions[0],
-                    dimensions[1],
+                    shape[1],
+                    shape[0],
                     |_, _| rand::thread_rng().gen()
                 ))
             .collect();
 
         let biases = layers
-                .iter()
-                .map(|dimension| na::DVector::from_fn(
-                    *dimension,
+                .windows(2)
+                .map(|shape| na::DVector::from_fn(
+                    shape[1],
                     |_, _| rand::thread_rng().gen()
                 ))
                 .collect();
 
         Self {
-            layers,
             weights,
             biases,
             activation_function
@@ -48,7 +47,13 @@ impl NeuralNetwork {
             .iter()
             .zip(&self.biases)
             .fold(input, 
-                |activation, (w, b)| self.activation_function.activation_function_vector(&mut (w * activation + b))
+                |activation, (w, b)| 
+                { 
+                    dbg!(activation.len());
+                    dbg!(w.shape());
+                    dbg!(b.shape());
+                    self.activation_function.activation_function_vector(&mut (w * activation + b))
+                }
             )
     }
 }
