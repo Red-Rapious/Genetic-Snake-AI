@@ -1,3 +1,3 @@
-import * as game from "lib-game-wasm";
+import * as gm from "lib-game-wasm";
 
-alert("Hello " + game.world());
+const games = new gm.Games();
