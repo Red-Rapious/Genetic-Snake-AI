@@ -29,3 +29,53 @@ h1 a:hover {
     font-style: italic;
     text-decoration: underline;
 }
+
+#buttons, #infos {
+    width: 100%;
+    margin-bottom: 20px;
+    text-align: center;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+#train, #pause, #restart {
+    margin-left: 30px;
+}
+
+#train, label, #restart, #generation, #min-fitness, #max-fitness, #average-fitness {
+    font-size: medium;
+    font-weight: bold;
+}
+
+label, #generation, #min-fitness, #max-fitness, #average-fitness {
+    color: white;
+}
+
+button {
+    padding: 6px;
+    padding-left: 10px;
+    padding-right: 10px;
+
+    background-color:rgb(255, 65, 65);
+
+    border-style: solid;
+    border-radius: 6px;
+    border-color: rgb(212, 0, 0);
+}
+
+button:hover {
+    background-color: rgb(255, 204, 204);
+}
+
+#infos {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+#generation, #min-fitness, #max-fitness, #average-fitness {
+    margin-left: 25px;
+}
+
+#generation {
+    margin-right: 100px;
+}

@@ -14,8 +14,26 @@
 
     <noscript>This page contains webassembly and javascript content, please enable javascript in your browser.</noscript>
     <script src="./bootstrap.js"></script>
+
+    <div id="buttons">
+      <button id="train">Next Generation</button>
+
+      <input type="checkbox" id="pause">
+      <label for="pause">Pause Training</label>
+
+      <button id="restart">Restart Training</button>
+    </div>
+
     <div id="games-container">
       <canvas id="viewport" width="900" height="600"></canvas>
+    </div>
+
+    <div id="infos">
+      <div id="generation">Generation: ??</div>
+
+      <div id="min-fitness">Minimum fitness: ??</div>
+      <div id="max-fitness">Maximum fitness: ??</div>
+      <div id="average-fitness">Average fitness: ??</div>
     </div>
   </body>
 </html>
