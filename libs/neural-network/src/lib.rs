@@ -14,7 +14,7 @@ pub struct NeuralNetwork {
 }
 
 impl NeuralNetwork {
-    fn random(layers: &Vec<usize>, activation_function: ActivationFunction) -> Self {
+    pub fn random(layers: &Vec<usize>, activation_function: ActivationFunction) -> Self {
         assert!(layers.len() > 1);
 
         let weights = layers
@@ -47,12 +47,12 @@ impl NeuralNetwork {
             .iter()
             .zip(&self.biases)
             .fold(input, 
-                |activation, (w, b)| 
+                |activation, (weight, bias)| 
                 { 
                     dbg!(activation.len());
-                    dbg!(w.shape());
-                    dbg!(b.shape());
-                    self.activation_function.activation_function_vector(&mut (w * activation + b))
+                    dbg!(weight.shape());
+                    dbg!(bias.shape());
+                    self.activation_function.activation_function_vector(&mut (weight * activation + bias))
                 }
             )
     }
