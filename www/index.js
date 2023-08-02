@@ -1,6 +1,6 @@
 import * as gm from "lib-game-wasm";
 
-const NB_VISUALISATION = 4;
+//const NB_VISUALISATION = 4;
 
 var games = new gm.Games();
 var viewport = document.getElementById("viewport");
@@ -32,8 +32,16 @@ function redraw() {
         const x = snake[tail][0];
         const y = snake[tail][1];
 
-        ctxt.fillRect(x * side_w * 0.9, y * side_h * 0.9, side_w, side_h);
+        ctxt.fillRect(x * side_w, y * side_h, side_w, side_h);
     }
+
+    // Eyes
+    const x0 = snake[0][0];
+    const y0 = snake[0][1];
+
+    ctxt.fillStyle = 'rgb(0, 0, 0)';
+    ctxt.fillRect(x0 * side_w + side_w * 0.1, y0 * side_h + side_w * 0.1, side_w * 0.3, side_h * 0.3);
+    ctxt.fillRect(x0 * side_w + side_w * 0.6, y0 * side_h + side_w * 0.1, side_w * 0.3, side_h * 0.3);
 
     //requestAnimationFrame(redraw);
 }
