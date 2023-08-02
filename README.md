@@ -12,14 +12,12 @@ This project is a sequel to both [MLP-Digits-Recognition](https://github.com/Red
 
 ## Running the simulation
 
-![Large Simulation Screenshot](assets/simulation-screenshot-large.png)
-
 The simulation can run in any browser. To try it yourself, you will need:
 - `rustc` and `cargo` installed, for the back-end code.
 - [`wasm-pack`](https://rustwasm.github.io/wasm-pack/installer/), to compile Rust code into WebAssembly
 - [`npm`](https://www.npmjs.com/get-npm) for the front-end simulation
 
-In the `Genetic-Birds-Simulator` root folder, you can make sure that everything is working by running:
+In the `Genetic-Snake-AI` root folder, you can make sure that everything is working by running:
 ```console
 $ cargo check && cargo test
 ```
@@ -44,3 +42,6 @@ If everything goes as planned, your terminal will display:
 ```
 
 Enter `http://localhost:8080/` (or any other given address) in your favorite web browser, and the simulation should start.
+
+## License
+This work is licensed under the [CC-BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) license.
