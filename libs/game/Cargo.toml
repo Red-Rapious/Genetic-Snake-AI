@@ -7,3 +7,6 @@ edition = "2021"
 
 [dependencies]
 rand = "*"
+nalgebra = "*"
+lib-neural-network = { path = "../neural-network" }
+lib-genetic-algorithm = { path = "../genetic-algorithm" }

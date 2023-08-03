@@ -1,4 +1,4 @@
-use crate::{selection_method::*, crossover_method::*, mutation_method::*};
+pub use crate::{selection_method::*, crossover_method::*, mutation_method::*};
 
 pub mod selection_method;
 pub mod crossover_method;
