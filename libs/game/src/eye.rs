@@ -11,8 +11,8 @@ impl Eye {
         assert!(snake.len() >= 1);
 
         let mut vision = [0.0; 8*3];
-        for (i, direction) in Direction::iterator().enumerate() {
-            let step = direction.step();
+        for (i, direction) in Direction8::iterator().enumerate() {
+            let incrementer = direction.incrementer();
 
             let mut apple_distance: Option<u32> = None;
             let wall_distance: u32;
@@ -24,8 +24,8 @@ impl Eye {
 
             loop {
                 // Walk one step
-                x += step.0;
-                y += step.1;
+                x += incrementer.0;
+                y += incrementer.1;
                 distance += 1;
 
                 // Check for wall
@@ -65,7 +65,7 @@ impl Eye {
     }
 }
 
-pub enum Direction {
+pub enum Direction8 {
     Right,
     UpRight,
     Up,
@@ -76,10 +76,10 @@ pub enum Direction {
     DownRight,
 }
 
-impl Direction {
-    pub fn iterator() -> Iter<'static, Direction> {
-        use self::Direction::*;
-        static DIRECTIONS: [Direction; 8] = [
+impl Direction8 {
+    pub fn iterator() -> Iter<'static, Direction8> {
+        use self::Direction8::*;
+        static DIRECTIONS: [Direction8; 8] = [
             Right,
             UpRight,
             Up,
@@ -92,8 +92,8 @@ impl Direction {
         DIRECTIONS.iter()
     }
 
-    pub fn step(&self) -> (i32, i32) {
-        use self::Direction::*;
+    pub fn incrementer(&self) -> (i32, i32) {
+        use self::Direction8::*;
         match *self {
             Right => (1, 0),
             Up => (0, 1),

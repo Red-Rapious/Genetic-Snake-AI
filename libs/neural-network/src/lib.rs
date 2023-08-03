@@ -2,7 +2,7 @@ extern crate nalgebra as na;
 use na::DMatrix;
 use rand::Rng;
 
-use crate::activation_function::*;
+pub use crate::activation_function::*;
 
 pub mod activation_function;
 mod tests;
