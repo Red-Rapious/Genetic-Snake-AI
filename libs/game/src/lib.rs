@@ -37,22 +37,44 @@ impl Games {
         }
     }
 
-    pub fn games(&self) -> &Vec<Game> {
+    pub fn games(&mut self) -> &Vec<Game> {
         &self.games
     }
 
     pub fn step(&mut self) {
         self.age += 1;
+        let mut one_game_still_running = false;
 
-        let _ = self.games.iter_mut().map(|game| game.step());
+        for game in self.games.iter_mut() {
+            if !game.lost {
+                game.step();
+                one_game_still_running = true;
+            }
+        }
 
-        if self.age > GENERATION_LENGTH {
+        if self.age > GENERATION_LENGTH || !one_game_still_running {
             self.evolve();
         }
     }
 
     fn evolve(&mut self) {
-        
+        self.age = 0;
+
+        // Convert the current Snakes to SnakeIndividuals
+        let current_population: Vec<SnakeIndividual> = self
+            .games
+            .iter()
+            .map(|game| SnakeIndividual::from(&game.snake))
+            .collect();
+
+        // Use the genetic algorithm to evolve the snake population
+        let evolved_population = self.genetic_algorithm.evolve(&current_population);
+
+        // Replace the evolved snakes in the games
+        let _ = self.games
+            .iter_mut()
+            .zip(evolved_population.iter())
+            .map(|(game, snake_individual)| game.reset(Snake::from(snake_individual)));
     }
 }
 
@@ -61,6 +83,7 @@ pub struct Game {
     height: u32,
     apple: (u32, u32),
     snake: Snake,
+    lost: bool
 }
 
 impl Game {
@@ -72,7 +95,8 @@ impl Game {
             height,
             // random position for the head of the snake
             apple: (rng.gen_range(0..width), rng.gen_range(0..height)),
-            snake: Snake::new()//(width, height)
+            snake: Snake::new(),//(width, height),
+            lost: false
         }
     }
 
@@ -112,6 +136,7 @@ impl Game {
         // Impossible position
         if !(0 <= moved_head.0 && moved_head.0 < self.width as i32 && 0 <= moved_head.1 && moved_head.1 < self.height as i32)  {
             self.loose();
+            return;
         } 
 
 
@@ -128,18 +153,33 @@ impl Game {
         for (tx, ty) in self.snake.body.iter() {
             if x == *tx as i32 && y == *ty as i32 {
                 self.loose();
-                break;
+                return;
             }
         }
 
         /* Handle collisions with the apple */
         if x == self.apple.0 as i32 && y == self.apple.1 as i32 {
-            todo!();
+            // Increase tail size
+            self.snake.body.push(end_tail);
+
+            // Respawn new apple
+            let mut rng = rand::thread_rng();
+            self.apple = (rng.gen_range(0..self.width), rng.gen_range(0..self.height));
+
+            // Update apples_eaten
+            self.snake.apples_eaten += 1;
         }
+
+        self.snake.age += 1;
     }
 
-    pub fn loose(&self) {
-        todo!();
+    pub fn loose(&mut self) {
+        self.lost = true;
+    }
+
+    pub fn reset(&mut self, snake: Snake) {
+        self.snake = snake;
+        self.lost = false;
     }
 }
 

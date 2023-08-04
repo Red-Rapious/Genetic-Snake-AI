@@ -54,6 +54,9 @@ ctxt.scale(viewportScale, viewportScale);
 
 // Main rendering function
 function redraw() {
+    ctxt.clearRect(0, 0, viewportWidth, viewportHeight);
+    games.step();
+
     var snake = games.games()[0].snake;
 
     ctxt.fillStyle = 'rgb(255, 255, 255)';

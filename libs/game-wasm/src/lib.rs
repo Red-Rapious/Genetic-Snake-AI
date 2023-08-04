@@ -16,9 +16,13 @@ impl Games {
         Self { games }
     }
 
-    pub fn games(&self) -> JsValue {
+    pub fn games(&mut self) -> JsValue {
         let games: Vec<Game> = self.games.games().iter().map(|game| Game::from(game)).collect();
         serde_wasm_bindgen::to_value(&games).unwrap()
+    }
+
+    pub fn step(&mut self) {
+        self.games.step();
     }
 }
 
