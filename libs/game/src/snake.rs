@@ -18,7 +18,7 @@ impl Snake {
         Self {
             body: vec![(0, 0)],//vec![(rng.gen_range(0..width), rng.gen_range(0..height))],
             eye: Eye::new(),
-            brain: nn::NeuralNetwork::random(&vec![8*3, 18, 18, 4]),
+            brain: nn::NeuralNetwork::random(),
             age: 0,
             apples_eaten: 0
         }
@@ -28,12 +28,16 @@ impl Snake {
 pub struct SnakeIndividual {
     apples_eaten: u32,
     age: u32,
-    genome: Vec<f32>
+    genome: Vec<f32>,
 }
 
 impl From<&Snake> for SnakeIndividual {
     fn from(snake: &Snake) -> Self {
-        Self { apples_eaten: snake.apples_eaten, age: snake.age, genome: snake.brain.to_weights() }
+        Self { 
+            apples_eaten: snake.apples_eaten, 
+            age: snake.age, 
+            genome: snake.brain.to_weights(),
+        }
     }
 }
 

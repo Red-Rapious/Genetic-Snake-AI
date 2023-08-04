@@ -11,8 +11,8 @@ mod tests {
         mod initialisation {
             use super::*;
 
-            fn test(layers: Vec<usize>) {
-                let nn = NeuralNetwork::random(&layers, ActivationFunction::sigmoid());
+            /*fn test(layers: Vec<usize>) {
+                let nn = NeuralNetwork::random(&layers);
 
                 for i in 0..layers.len()-2 {
                     assert_eq!(nn.weights[i].shape(), (layers[i+1], layers[i]));
@@ -37,6 +37,11 @@ mod tests {
             #[test]
             fn huge() {
                 test((0..100).collect());
+            }*/
+
+            #[test]
+            fn test() {
+                let _ = NeuralNetwork::random();
             }
         }
 
@@ -45,18 +50,34 @@ mod tests {
 
             #[test]
             fn sigmoid() {
-                let nn = NeuralNetwork::random(&vec![3, 4, 5, 6], ActivationFunction::sigmoid());
-                let input = na::DVector::from(vec![42.0, 21.0, 100.0]);
+                let mut nn = NeuralNetwork::random();
+                nn.activation_function = ActivationFunction::sigmoid();
+                let input = na::DVector::from([1.0; 8*3].to_vec());
 
                 nn.feed_forward(input);
             }
 
             #[test]
             fn relu() {
-                let nn = NeuralNetwork::random(&vec![3, 4, 5, 6], ActivationFunction::ReLU());
-                let input = na::DVector::from(vec![42.0, 21.0, 100.0]);
+                let mut nn = NeuralNetwork::random();
+                nn.activation_function = ActivationFunction::ReLU();
+                let input = na::DVector::from([1.0; 8*3].to_vec());
 
                 nn.feed_forward(input);
+            }
+        }
+
+        mod weights {
+            use super::*;
+    
+            #[test]
+            fn to_and_from_weights() {
+                let nn = NeuralNetwork::random();
+    
+                let weights = nn.to_weights();
+                let nn_bis = NeuralNetwork::from_weights(&weights);
+    
+                assert_eq!(nn, nn_bis);
             }
         }
     }

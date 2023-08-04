@@ -8,7 +8,7 @@ pub mod activation_function;
 mod tests;
 
 const ACTIVATION_FUNCTION: ActivationFunctionType = ActivationFunctionType::Sigmoid;
-
+const LAYERS: &[usize; 4] = &[8*3, 18, 18, 4];
 
 #[derive(Debug, PartialEq)]
 pub struct NeuralNetwork {
@@ -18,10 +18,10 @@ pub struct NeuralNetwork {
 }
 
 impl NeuralNetwork {
-    pub fn random(layers: &Vec<usize>) -> Self {
-        assert!(layers.len() > 1);
+    pub fn random() -> Self {
+        assert!(LAYERS.len() > 1);
 
-        let weights = layers
+        let weights = LAYERS
             .windows(2)
             .map(|shape| 
                 DMatrix::from_fn(
@@ -31,7 +31,7 @@ impl NeuralNetwork {
                 ))
             .collect();
 
-        let biases = layers
+        let biases = LAYERS
                 .windows(2)
                 .map(|shape| na::DVector::from_fn(
                     shape[1],
@@ -61,31 +61,72 @@ impl NeuralNetwork {
             )
     }
 
+    /// Converts a full neural network to a vector of weights and biases.
+    pub fn to_weights(&self) -> Vec<f32> {
+        let mut weights = vec![]; // TODO change capacity
+
+        /*let _ = self.weights
+            .iter()
+            .map(|matrix| {
+                let _ = matrix
+                    .iter()
+                    .map(|&coeff| weights.push(coeff));
+            });*/
+
+        for matrix in self.weights.iter() {
+            for &coeff in matrix.iter() {
+                weights.push(coeff);
+            }
+        }
+
+        /*let _ = self.biases
+            .iter()
+            .map(|vect| {
+                let _ = vect
+                    .iter()
+                    .map(|&coeff| weights.push(coeff));
+            });*/
+
+        for vector in self.biases.iter() {
+            for &coeff in vector.iter() {
+                weights.push(coeff);
+            }
+        }
+
+        weights
+    }
+
     /// Initializes a layer from given weights.
     pub fn from_weights(weights: &Vec<f32>) -> Self {
-        todo!()
-    }
+        let mut weights_vect = vec![];
+        let mut biases_vect = vec![];
+        let mut cursor = 0;
 
-    pub fn to_weights(&self) -> Vec<f32> {
-        todo!()
-    }
-}
+        for shape in LAYERS.windows(2) {
+            let mut matrix = Vec::with_capacity(shape[0]*shape[1]);
+            for _ in 0..shape[0]*shape[1] {
+                matrix.push(weights[cursor]);
+                cursor += 1;
+            }
 
-#[cfg(test)]
-mod test {
-    use super::*;
+            weights_vect.push(na::DMatrix::from_vec(shape[1], shape[0], matrix));
+        }
 
-    mod weights {
-        use super::*;
+        for &width in LAYERS.iter().skip(1) {
+            let mut vector = Vec::with_capacity(width);
+            for _ in 0..width {
+                vector.push(weights[cursor]);
+                cursor += 1;
+            }
+            biases_vect.push(na::DVector::from_vec(vector));
+        }
 
-        #[test]
-        fn to_and_from_weights() {
-            let nn = NeuralNetwork::random(&vec![3, 4, 5]);
+        assert!(weights.len() == cursor);
 
-            let weights = nn.to_weights();
-            let nn_bis = NeuralNetwork::from_weights(&weights);
-
-            assert_eq!(nn, nn_bis);
+        Self { 
+            weights: weights_vect, 
+            biases: biases_vect, 
+            activation_function: ActivationFunction::new(ACTIVATION_FUNCTION)
         }
     }
 }
