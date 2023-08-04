@@ -7,6 +7,10 @@ pub use crate::activation_function::*;
 pub mod activation_function;
 mod tests;
 
+const ACTIVATION_FUNCTION: ActivationFunctionType = ActivationFunctionType::Sigmoid;
+
+
+#[derive(Debug, PartialEq)]
 pub struct NeuralNetwork {
     weights: Vec<na::DMatrix<f32>>,
     biases: Vec<na::DVector<f32>>,
@@ -14,7 +18,7 @@ pub struct NeuralNetwork {
 }
 
 impl NeuralNetwork {
-    pub fn random(layers: &Vec<usize>, activation_function: ActivationFunction) -> Self {
+    pub fn random(layers: &Vec<usize>) -> Self {
         assert!(layers.len() > 1);
 
         let weights = layers
@@ -38,7 +42,7 @@ impl NeuralNetwork {
         Self {
             weights,
             biases,
-            activation_function
+            activation_function: ActivationFunction::new(ACTIVATION_FUNCTION)
         }
     }
 
@@ -64,5 +68,24 @@ impl NeuralNetwork {
 
     pub fn to_weights(&self) -> Vec<f32> {
         todo!()
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    mod weights {
+        use super::*;
+
+        #[test]
+        fn to_and_from_weights() {
+            let nn = NeuralNetwork::random(&vec![3, 4, 5]);
+
+            let weights = nn.to_weights();
+            let nn_bis = NeuralNetwork::from_weights(&weights);
+
+            assert_eq!(nn, nn_bis);
+        }
     }
 }

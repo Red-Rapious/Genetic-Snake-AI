@@ -2,6 +2,7 @@ use crate::*;
 use std::fmt;
 
 /// An enumeration of all available activation functions, like `Sigmoid` or `ReLU`.
+#[derive(Debug, PartialEq)]
 pub enum ActivationFunctionType {
     Sigmoid,
     ReLU
@@ -17,6 +18,7 @@ impl fmt::Display for ActivationFunctionType {
 }
 
 /// A structure providing the good activation function depending on the given type.
+#[derive(Debug, PartialEq)]
 pub struct ActivationFunction {
     /// The activation function, which will dictate the main function and its derivative.
     function_type: ActivationFunctionType

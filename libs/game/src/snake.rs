@@ -18,7 +18,7 @@ impl Snake {
         Self {
             body: vec![(0, 0)],//vec![(rng.gen_range(0..width), rng.gen_range(0..height))],
             eye: Eye::new(),
-            brain: nn::NeuralNetwork::random(&vec![8*3, 18, 18, 4], nn::ActivationFunction::sigmoid()),
+            brain: nn::NeuralNetwork::random(&vec![8*3, 18, 18, 4]),
             age: 0,
             apples_eaten: 0
         }
