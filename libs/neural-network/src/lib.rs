@@ -56,4 +56,13 @@ impl NeuralNetwork {
                 }
             )
     }
+
+    /// Initializes a layer from given weights.
+    pub fn from_weights(weights: Vec<f32>) -> Self {
+        todo!()
+    }
+
+    pub fn to_weights(&self) -> Vec<f32> {
+        todo!()
+    }
 }

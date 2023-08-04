@@ -37,6 +37,6 @@ impl Game {
 
 impl From<&gm::Game> for Game {
     fn from(game: &gm::Game) -> Self {
-        Self { width: game.width(), height: game.height(), snake: game.snake().clone() }
+        Self { width: game.width(), height: game.height(), snake: game.body().clone() }
     }
 }

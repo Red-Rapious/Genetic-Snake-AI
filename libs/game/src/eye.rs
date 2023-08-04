@@ -7,8 +7,8 @@ impl Eye {
         Self
     }
 
-    pub fn process_vision(&self, snake: &Vec<(u32, u32)>, apple: (u32, u32), width: u32, height: u32) -> [f32; 8*3] {
-        assert!(snake.len() >= 1);
+    pub fn process_vision(&self, body: &Vec<(u32, u32)>, apple: (u32, u32), width: u32, height: u32) -> [f32; 8*3] {
+        assert!(body.len() >= 1);
 
         let mut vision = [0.0; 8*3];
         for (i, direction) in Direction8::iterator().enumerate() {
@@ -18,8 +18,8 @@ impl Eye {
             let wall_distance: u32;
             let mut tail_distance: Option<u32> = None;
 
-            let mut x = snake[0].0 as i32;
-            let mut y = snake[0].1 as i32;
+            let mut x = body[0].0 as i32;
+            let mut y = body[0].1 as i32;
             let mut distance = 0;
 
             loop {
@@ -41,7 +41,7 @@ impl Eye {
                 }
 
                 // Check for tail
-                for (tx, ty) in snake.iter() {
+                for (tx, ty) in body.iter() {
                     if tail_distance == None && x == *tx as i32 && y == *ty as i32 {
                         tail_distance = Some(distance);
                     }

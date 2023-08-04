@@ -1,11 +1,12 @@
 use lib_neural_network as nn;
 use lib_genetic_algorithm as ga;
-use crate::eye::*;
+use crate::{eye::*, snake::*};
 
 use rand::Rng;
 use nalgebra as na;
 
 pub mod eye;
+pub mod snake;
 
 /// Gaussian Mutation chance of mutation
 const MUTATION_CHANCE: f64 = 0.01;
@@ -58,10 +59,8 @@ impl Games {
 pub struct Game {
     width: u32,
     height: u32,
-    snake: Vec<(u32, u32)>,
     apple: (u32, u32),
-    eye: Eye,
-    brain: nn::NeuralNetwork
+    snake: Snake,
 }
 
 impl Game {
@@ -72,10 +71,8 @@ impl Game {
             width,
             height,
             // random position for the head of the snake
-            snake: vec![(rng.gen_range(0..width), rng.gen_range(0..height))],
             apple: (rng.gen_range(0..width), rng.gen_range(0..height)),
-            eye: Eye::new(),
-            brain: nn::NeuralNetwork::random(&vec![8*3, 18, 18, 4], nn::ActivationFunction::sigmoid())
+            snake: Snake::new()//(width, height)
         }
     }
 
@@ -87,16 +84,16 @@ impl Game {
         self.height
     }
 
-    pub fn snake(&self) -> &Vec<(u32, u32)> {
-        &self.snake
+    pub fn body(&self) -> &Vec<(u32, u32)> {
+        &self.snake.body
     }
 
     pub fn step(&mut self) {
-        // Process vision
-        let vision = self.eye.process_vision(&self.snake, self.apple, self.width, self.height);
+        /* Process vision */
+        let vision = self.snake.eye.process_vision(&self.snake.body, self.apple, self.width, self.height);
 
-        // Process brain
-        let directions_activation = self.brain.feed_forward(na::DVector::from(vision.to_vec()));
+        /* Process brain */
+        let directions_activation = self.snake.brain.feed_forward(na::DVector::from(vision.to_vec()));
         // Choose the index of the maximum activation
         let mut maxi = (0, 0.0);
         for i in 1..directions_activation.shape().0 {
@@ -106,9 +103,43 @@ impl Game {
         }
         let direction = Direction4::from(maxi.0);
 
-        // Move snake
+        /* Move snake */
+        let incrementer = direction.incrementer();
 
-        // Handle collisions
+        let moved_head = (self.snake.body[0].0 as i32 + incrementer.0, self.snake.body[0].1 as i32 + incrementer.1);
+        let end_tail = self.snake.body[self.snake.body.len() - 1];
+
+        // Impossible position
+        if !(0 <= moved_head.0 && moved_head.0 < self.width as i32 && 0 <= moved_head.1 && moved_head.1 < self.height as i32)  {
+            self.loose();
+        } 
+
+
+        // Move the tail: each bit takes the position of the previous bit
+        for i in (1..self.snake.body.len()).rev() {
+            self.snake.body[i] = self.snake.body[i-1];
+        }
+
+        // Move the head
+        self.snake.body[0] = (moved_head.0 as u32, moved_head.1 as u32);
+
+        /* Handle collisions with the tail */
+        let (x, y) = moved_head;
+        for (tx, ty) in self.snake.body.iter() {
+            if x == *tx as i32 && y == *ty as i32 {
+                self.loose();
+                break;
+            }
+        }
+
+        /* Handle collisions with the apple */
+        if x == self.apple.0 as i32 && y == self.apple.1 as i32 {
+            todo!();
+        }
+    }
+
+    pub fn loose(&self) {
+        todo!();
     }
 }
 

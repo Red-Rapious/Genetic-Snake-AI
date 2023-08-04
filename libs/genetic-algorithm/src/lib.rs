@@ -38,7 +38,7 @@ impl<S> GeneticAlgorithm<S>
                 let parent_a = self.selection_method.select(population).genome();
                 let parent_b = self.selection_method.select(population).genome();
 
-                let mut child = self.crossover_method.crossover(parent_a, parent_b);
+                let mut child = self.crossover_method.crossover(&parent_a, &parent_b);
 
                 self.mutation_method.mutate(&mut child);
 
@@ -50,6 +50,6 @@ impl<S> GeneticAlgorithm<S>
 
 pub trait Individual {
     fn fitness(&self) -> f32;
-    fn genome(&self) -> &Vec<f32>;
+    fn genome(&self) -> Vec<f32>;
     fn create(genom: Vec<f32>) -> Self;
 }
