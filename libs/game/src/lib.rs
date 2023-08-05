@@ -41,9 +41,10 @@ impl Games {
         &self.games
     }
 
-    pub fn step(&mut self) -> bool {
+    pub fn step(&mut self) -> Option<ga::Statistics> {
         self.age += 1;
         let mut one_game_still_running = false;
+        let mut stats = None;
 
         for game in self.games.iter_mut() {
             if !game.lost {
@@ -53,12 +54,13 @@ impl Games {
         }
 
         if self.age > GENERATION_LENGTH || !one_game_still_running {
-            self.evolve();
+            stats = Some(self.evolve());
         }
-        self.age > GENERATION_LENGTH || !one_game_still_running
+
+        stats
     }
 
-    fn evolve(&mut self) {
+    fn evolve(&mut self) -> ga::Statistics {
         self.age = 0;
 
         // Convert the current Snakes to SnakeIndividuals
@@ -69,17 +71,19 @@ impl Games {
             .collect();
 
         // Use the genetic algorithm to evolve the snake population
-        let evolved_population = self.genetic_algorithm.evolve(&current_population);
+        let (evolved_population, stats) = self.genetic_algorithm.evolve(&current_population);
 
         // Replace the evolved snakes in the games
         for (game, snake_individual) in self.games.iter_mut().zip(evolved_population.iter()) {
             game.reset(Snake::from(snake_individual));
         }
+
+        stats
     }
 
     pub fn train(&mut self) {
         loop {
-            if self.step() { break; }
+            if let Some(_) = self.step() { break; }
         }
     }
 }
@@ -88,7 +92,7 @@ pub struct Game {
     width: u32,
     height: u32,
     apple: (u32, u32),
-    snake: Snake,
+    pub snake: Snake,
     lost: bool
 }
 

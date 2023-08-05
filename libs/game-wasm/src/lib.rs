@@ -1,19 +1,27 @@
+use gm::snake::{Snake, SnakeIndividual};
 use wasm_bindgen::prelude::*;
 use lib_game as gm;
+use lib_genetic_algorithm as ga;
 use serde::Serialize;
 
 #[wasm_bindgen]
 pub struct Games {
     games: gm::Games,
+    generation: usize,
+    stats: ga::Statistics
 }
 
 #[wasm_bindgen]
 impl Games {
     #[wasm_bindgen(constructor)]
     pub fn new() -> Self {
-        let games = gm::Games::new(4, 30, 20);
+        let mut games = gm::Games::new(4, 30, 20);
+        
+        let snakes_individuals: Vec<SnakeIndividual> = games.games()
+            .iter()
+            .map(|game| SnakeIndividual::from(&game.snake)).collect();
 
-        Self { games }
+        Self { games, generation: 0, stats: ga::Statistics::new(&snakes_individuals) }
     }
 
     pub fn games(&mut self) -> JsValue {
@@ -22,11 +30,31 @@ impl Games {
     }
 
     pub fn step(&mut self) {
-        self.games.step();
+        if let Some(stats) = self.games.step() { 
+            self.generation += 1; 
+            self.stats = stats;
+        }
     }
 
     pub fn train(&mut self) {
         self.games.train();
+        self.generation += 1;
+    }
+
+    pub fn generation(&self) -> usize {
+        self.generation
+    }
+
+    pub fn min_fitness(&self) -> usize {
+        self.stats.min_fitness() as usize
+    }
+
+    pub fn max_fitness(&self) -> usize {
+        self.stats.max_fitness() as usize
+    }
+
+    pub fn avg_fitness(&self) -> usize {
+        self.stats.avg_fitness() as usize
     }
 }
 

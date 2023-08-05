@@ -1,8 +1,9 @@
-pub use crate::{selection_method::*, crossover_method::*, mutation_method::*};
+pub use crate::{selection_method::*, crossover_method::*, mutation_method::*, statistics::*};
 
 pub mod selection_method;
 pub mod crossover_method;
 pub mod mutation_method;
+pub mod statistics;
 
 pub struct GeneticAlgorithm<S> 
     where S: SelectionMethod
@@ -27,12 +28,12 @@ impl<S> GeneticAlgorithm<S>
         }
     }
 
-    pub fn evolve<I>(&self, population: &[I]) -> Vec<I>
+    pub fn evolve<I>(&self, population: &[I]) -> (Vec<I>, Statistics)
         where I: Individual
     {
         assert!(!population.is_empty());
 
-        population
+        let new_population = population
             .iter()
             .map(|_| {
                 let parent_a = self.selection_method.select(population).genome();
@@ -44,7 +45,9 @@ impl<S> GeneticAlgorithm<S>
 
                 I::create(child)
             })
-            .collect()
+            .collect();
+
+        (new_population, Statistics::new(population))
     }
 }
 

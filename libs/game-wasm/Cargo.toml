@@ -8,6 +8,7 @@ edition = "2021"
 [dependencies]
 wasm-bindgen = "0.2"
 lib-game = { path = "../game" }
+lib-genetic-algorithm = { path = "../genetic-algorithm" }
 getrandom = { version = "0.2", features = ["js"] }
 serde = { version = "1.0", features = ["derive"] }
 serde-wasm-bindgen = "0.5"

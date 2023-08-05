@@ -28,6 +28,11 @@ document.getElementById("train").onclick = function() {
     games.train();
 }
 
+const generationLabel = document.getElementById("generation");
+const minFitnessLabel = document.getElementById("min-fitness");
+const maxFitnessLabel = document.getElementById("max-fitness");
+const averageFitnessLabel = document.getElementById("average-fitness");
+
 var viewport = document.getElementById("viewport");
 
 // Adapat the viewport scale to avoid pixelized images.
@@ -81,6 +86,12 @@ function redraw() {
 
     ctxt.fillStyle = 'rgb(255, 0, 0)';
     ctxt.fillRect(apple[0] * side_w, apple[1] * side_h, side_w, side_h);
+
+    // Update the labels
+    generationLabel.innerHTML = "Generation: " + games.generation();
+    minFitnessLabel.innerHTML = "Minimum Fitness: " + games.min_fitness();
+    maxFitnessLabel.innerHTML = "Maximum Fitness: " + games.max_fitness();
+    averageFitnessLabel.innerHTML = "Average Fitness: " + games.avg_fitness();
 
     if (!gamePaused) {
         requestAnimationFrame(redraw);
