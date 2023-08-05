@@ -3,6 +3,9 @@ import * as gm from "lib-game-wasm";
 // Number of snakes displayed at the same time
 //const NB_VISUALISATION = 4;
 
+// Minimum delay between each frame, in milliseconds.
+const FRAME_DELAY = 50;
+
 var games = new gm.Games();
 
 // The `pause` checkbox pauses the game by stoping the main rendering function
@@ -94,7 +97,7 @@ function redraw() {
     averageFitnessLabel.innerHTML = "Average Fitness: " + games.avg_fitness();
 
     if (!gamePaused) {
-        requestAnimationFrame(redraw);
+        setTimeout(function() { requestAnimationFrame(redraw) }, FRAME_DELAY);
     }
 }
 

@@ -141,20 +141,22 @@ impl Game {
                 maxi = (i, directions_activation[i]);
             }
         }
-        let direction = Direction4::from(maxi.0);
 
-        /* Move snake */
+        let direction = Direction4::from(maxi.0);
+        self.move_snake(direction);
+    }
+
+    pub fn move_snake(&mut self, direction: Direction4) {
         let incrementer = direction.incrementer();
 
         let moved_head = (self.snake.body[0].0 as i32 + incrementer.0, self.snake.body[0].1 as i32 + incrementer.1);
         let end_tail = self.snake.body[self.snake.body.len() - 1];
 
-        // Impossible position
+        // The new head of the snake is out of the grid
         if !(0 <= moved_head.0 && moved_head.0 < self.width as i32 && 0 <= moved_head.1 && moved_head.1 < self.height as i32)  {
             self.loose();
             return;
         } 
-
 
         // Move the tail: each bit takes the position of the previous bit
         for i in (1..self.snake.body.len()).rev() {
@@ -166,7 +168,7 @@ impl Game {
 
         /* Handle collisions with the tail */
         let (x, y) = moved_head;
-        for (tx, ty) in self.snake.body.iter() {
+        for (tx, ty) in self.snake.body.iter().skip(1) {
             if x == *tx as i32 && y == *ty as i32 {
                 self.loose();
                 return;
@@ -242,12 +244,29 @@ mod test {
         use super::*;
 
         #[test]
-        fn test() {
+        fn step() {
             let mut games = Games::new(100, 30, 20);
             
             for _ in 0..10 {
                 games.step();
             }
+        }
+    }
+
+    mod game {
+        use super::*;
+
+        #[test]
+        fn loose_game() {
+            let mut game = Game::new(3, 3);
+            game.apple = (0,0);
+            game.snake.body = vec![(1, 1)];
+
+            game.move_snake(Direction4::Down);
+            assert_eq!(game.lost, false, "Lost too quickly.");
+
+            game.move_snake(Direction4::Down);
+            assert_eq!(game.lost, true, "Did not loose whereas it should have.");
         }
     }
 }
