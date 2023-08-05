@@ -47,5 +47,20 @@ If everything goes as planned, your terminal will display:
 
 Enter `http://localhost:8080/` (or any other given address) in your favorite web browser, and the simulation should start.
 
+## Parameters
+You can play with the parameters of the game and genetic algorithm. They are defined as constants in the following files.
+
+[`game/lib.rs`:](libs/game/src/libs.rs)
+- Gaussian mutation parameters: the chance of mutation, and coefficient of change.
+- The number of birds and foods in the simulation.
+- The `GENERATION_LENGTH`, maximum number of steps between two evolutions.
+
+[`index.js`:](www/index.js)
+- `FRAME_DELAY`, the minimum delay between each frame, in milliseconds. Use this to ajust the speed of the game. Values around `50` are close to the normal speed of the actual game, but small values increase the speed of the training process.
+
+[`neural-network/lib.rs`:](libs/neural-network/src/lib.rs)
+- `ACTIVATION_FUNCTION`, the activation function used by the neural network, can be chosen between `Sigmoid` or `ReLU`.
+- `LAYERS`, the layers of the neural network. Note that the input and output layers should not be changed, only the intermediate layers.
+
 ## License
 This work is licensed under the [CC-BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) license.
