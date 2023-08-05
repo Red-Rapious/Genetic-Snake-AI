@@ -41,7 +41,7 @@ impl Games {
         &self.games
     }
 
-    pub fn step(&mut self) {
+    pub fn step(&mut self) -> bool {
         self.age += 1;
         let mut one_game_still_running = false;
 
@@ -55,6 +55,7 @@ impl Games {
         if self.age > GENERATION_LENGTH || !one_game_still_running {
             self.evolve();
         }
+        self.age > GENERATION_LENGTH || !one_game_still_running
     }
 
     fn evolve(&mut self) {
@@ -71,10 +72,15 @@ impl Games {
         let evolved_population = self.genetic_algorithm.evolve(&current_population);
 
         // Replace the evolved snakes in the games
-        let _ = self.games
-            .iter_mut()
-            .zip(evolved_population.iter())
-            .map(|(game, snake_individual)| game.reset(Snake::from(snake_individual)));
+        for (game, snake_individual) in self.games.iter_mut().zip(evolved_population.iter()) {
+            game.reset(Snake::from(snake_individual));
+        }
+    }
+
+    pub fn train(&mut self) {
+        loop {
+            if self.step() { break; }
+        }
     }
 }
 
@@ -93,7 +99,7 @@ impl Game {
         Self {
             width,
             height,
-            // random position for the head of the snake
+            // random position for the apple
             apple: (rng.gen_range(0..width), rng.gen_range(0..height)),
             snake: Snake::new(),//(width, height),
             lost: false
@@ -112,7 +118,13 @@ impl Game {
         &self.snake.body
     }
 
+    pub fn apple(&self) -> (u32, u32) {
+        self.apple
+    }
+
     pub fn step(&mut self) {
+        self.snake.age += 1;
+
         /* Process vision */
         let vision = self.snake.eye.process_vision(&self.snake.body, self.apple, self.width, self.height);
 
@@ -169,8 +181,6 @@ impl Game {
             // Update apples_eaten
             self.snake.apples_eaten += 1;
         }
-
-        self.snake.age += 1;
     }
 
     pub fn loose(&mut self) {
@@ -178,8 +188,13 @@ impl Game {
     }
 
     pub fn reset(&mut self, snake: Snake) {
+        // Replace old snake with new snake, and reset `lost`
         self.snake = snake;
         self.lost = false;
+
+        // Change apple position for visibility
+        let mut rng = rand::thread_rng();
+        self.apple = (rng.gen_range(0..self.width), rng.gen_range(0..self.height));
     }
 }
 
@@ -211,6 +226,24 @@ impl Direction4 {
             Up => (0, 1),
             Left => (-1, 0),
             Down => (0, -1),
+        }
+    }
+}
+
+#[cfg(test)]
+mod test {
+    use super::*;
+
+    mod games {
+        use super::*;
+
+        #[test]
+        fn test() {
+            let mut games = Games::new(100, 30, 20);
+            
+            for _ in 0..10 {
+                games.step();
+            }
         }
     }
 }

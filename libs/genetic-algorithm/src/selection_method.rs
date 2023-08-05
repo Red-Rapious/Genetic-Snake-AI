@@ -21,6 +21,6 @@ impl SelectionMethod for RouletteWheelSelection {
     {
         population
             .choose_weighted(&mut rand::thread_rng(), |individual| individual.fitness())
-            .expect("[ERROR] Empty population.")
+            .expect("[ERROR] Empty population, or every fitness is zero.")
     }
 }

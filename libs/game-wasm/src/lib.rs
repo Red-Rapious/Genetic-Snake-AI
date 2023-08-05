@@ -24,23 +24,32 @@ impl Games {
     pub fn step(&mut self) {
         self.games.step();
     }
+
+    pub fn train(&mut self) {
+        self.games.train();
+    }
 }
 
 #[derive(Clone, Debug, Serialize)]
 pub struct Game {
     width: u32,
     height: u32,
-    snake: Vec<(u32, u32)>
+    snake: Vec<(u32, u32)>,
+    apple: (u32, u32)
 }
 
 impl Game {
     pub fn snake(&self) -> JsValue {
         serde_wasm_bindgen::to_value(&self.snake).unwrap()
     }
+
+    pub fn apple(&self) -> JsValue {
+        serde_wasm_bindgen::to_value(&self.apple).unwrap()
+    }
 }
 
 impl From<&gm::Game> for Game {
     fn from(game: &gm::Game) -> Self {
-        Self { width: game.width(), height: game.height(), snake: game.body().clone() }
+        Self { width: game.width(), height: game.height(), snake: game.body().clone(), apple: game.apple() }
     }
 }

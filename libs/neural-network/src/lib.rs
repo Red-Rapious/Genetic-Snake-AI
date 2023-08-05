@@ -53,9 +53,6 @@ impl NeuralNetwork {
             .fold(input, 
                 |activation, (weight, bias)| 
                 { 
-                    dbg!(activation.len());
-                    dbg!(weight.shape());
-                    dbg!(bias.shape());
                     self.activation_function.activation_function_vector(&mut (weight * activation + bias))
                 }
             )

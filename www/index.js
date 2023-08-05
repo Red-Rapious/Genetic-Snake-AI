@@ -5,14 +5,14 @@ import * as gm from "lib-game-wasm";
 
 var games = new gm.Games();
 
-// The `pause` checkbox pauses the simulation by stoping the main rendering function
-var simulationPaused = false;
+// The `pause` checkbox pauses the game by stoping the main rendering function
+var gamePaused = false;
 const pauseCheckbox = document.getElementById("pause");
-pauseCheckbox.checked = simulationPaused;
+pauseCheckbox.checked = gamePaused;
 
 pauseCheckbox.onclick = function() {
-    simulationPaused = pauseCheckbox.checked;
-    if (!simulationPaused) {
+    gamePaused = pauseCheckbox.checked;
+    if (!gamePaused) {
         redraw();
     }
 }
@@ -25,7 +25,7 @@ restartBtn.onclick = function() {
 
 // Maps the "Next Generation" button to `simulation.train()`
 document.getElementById("train").onclick = function() {
-    //simulation.train();
+    games.train();
 }
 
 var viewport = document.getElementById("viewport");
@@ -57,6 +57,7 @@ function redraw() {
     ctxt.clearRect(0, 0, viewportWidth, viewportHeight);
     games.step();
 
+    // Draw snake
     var snake = games.games()[0].snake;
 
     ctxt.fillStyle = 'rgb(255, 255, 255)';
@@ -67,7 +68,7 @@ function redraw() {
         ctxt.fillRect(x * side_w, y * side_h, side_w, side_h);
     }
 
-    // Eyes
+    // Draw eyes
     const x0 = snake[0][0];
     const y0 = snake[0][1];
 
@@ -75,7 +76,13 @@ function redraw() {
     ctxt.fillRect(x0 * side_w + side_w * 0.1, y0 * side_h + side_w * 0.1, side_w * 0.3, side_h * 0.3);
     ctxt.fillRect(x0 * side_w + side_w * 0.6, y0 * side_h + side_w * 0.1, side_w * 0.3, side_h * 0.3);
 
-    if (!simulationPaused) {
+    // Draw apple
+    var apple = games.games()[0].apple;
+
+    ctxt.fillStyle = 'rgb(255, 0, 0)';
+    ctxt.fillRect(apple[0] * side_w, apple[1] * side_h, side_w, side_h);
+
+    if (!gamePaused) {
         requestAnimationFrame(redraw);
     }
 }
