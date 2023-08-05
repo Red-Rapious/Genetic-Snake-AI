@@ -1,4 +1,4 @@
-use gm::snake::{Snake, SnakeIndividual};
+use gm::snake::SnakeIndividual;
 use wasm_bindgen::prelude::*;
 use lib_game as gm;
 use lib_genetic_algorithm as ga;

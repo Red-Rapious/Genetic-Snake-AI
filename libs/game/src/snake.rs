@@ -12,11 +12,11 @@ pub struct Snake {
 }
 
 impl Snake {
-    pub fn new(/*width: u32, height: u32*/) -> Self {
-        //let mut rng = rand::thread_rng();
+    pub fn new(width: u32, height: u32) -> Self {
+        let mut rng = rand::thread_rng();
 
         Self {
-            body: vec![(0, 0)],//vec![(rng.gen_range(0..width), rng.gen_range(0..height))],
+            body: vec![(rng.gen_range(0..width), rng.gen_range(0..height))],
             eye: Eye::new(),
             brain: nn::NeuralNetwork::random(),
             age: 0,
@@ -41,10 +41,11 @@ impl From<&Snake> for SnakeIndividual {
     }
 }
 
-impl From<&SnakeIndividual> for Snake {
-    fn from(snake_individual: &SnakeIndividual) -> Self {
+impl From<(&SnakeIndividual, u32, u32)> for Snake {
+    fn from((snake_individual, width, height): (&SnakeIndividual, u32, u32)) -> Self {
+        let mut rng = rand::thread_rng();
         Self { 
-            body: vec![(0, 0)], 
+            body: vec![(rng.gen_range(0..width), rng.gen_range(0..height))], 
             eye: Eye::new(), 
             brain: nn::NeuralNetwork::from_weights(&snake_individual.genome), 
             age: 0, 

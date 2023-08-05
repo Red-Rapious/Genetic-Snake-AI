@@ -14,7 +14,7 @@ const MUTATION_CHANCE: f64 = 0.01;
 const MUTATION_COEFF: f32 = 0.03;
 
 /// How many steps each snake gets to live
-const GENERATION_LENGTH: u32 = 100; 
+const GENERATION_LENGTH: u32 = 1_000; 
 
 pub struct Games {
     games: Vec<Game>,
@@ -75,7 +75,7 @@ impl Games {
 
         // Replace the evolved snakes in the games
         for (game, snake_individual) in self.games.iter_mut().zip(evolved_population.iter()) {
-            game.reset(Snake::from(snake_individual));
+            game.reset(Snake::from((snake_individual, game.width, game.height)));
         }
 
         stats
@@ -105,7 +105,7 @@ impl Game {
             height,
             // random position for the apple
             apple: (rng.gen_range(0..width), rng.gen_range(0..height)),
-            snake: Snake::new(),//(width, height),
+            snake: Snake::new(width, height),
             lost: false
         }
     }
