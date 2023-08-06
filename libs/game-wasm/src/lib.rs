@@ -4,6 +4,10 @@ use lib_game as gm;
 use lib_genetic_algorithm as ga;
 use serde::Serialize;
 
+const NUMBER_GAMES: u32 = 1_000;
+const WIDTH: u32 = 40;
+const HEIGHT: u32 = 40;
+
 #[wasm_bindgen]
 pub struct Games {
     games: gm::Games,
@@ -15,7 +19,7 @@ pub struct Games {
 impl Games {
     #[wasm_bindgen(constructor)]
     pub fn new() -> Self {
-        let mut games = gm::Games::new(4, 30, 20);
+        let mut games = gm::Games::new(NUMBER_GAMES, WIDTH, HEIGHT);
         
         let snakes_individuals: Vec<SnakeIndividual> = games.games()
             .iter()

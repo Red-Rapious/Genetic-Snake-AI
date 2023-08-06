@@ -4,7 +4,7 @@ import * as gm from "lib-game-wasm";
 //const NB_VISUALISATION = 4;
 
 // Minimum delay between each frame, in milliseconds.
-const FRAME_DELAY = 50;
+const FRAME_DELAY = 0;
 
 var games = new gm.Games();
 
@@ -24,11 +24,16 @@ pauseCheckbox.onclick = function() {
 const restartBtn = document.getElementById("restart");
 restartBtn.onclick = function() {
     games = new gm.Games();
+    pauseCheckbox.checked = false;
+    gamePaused = false;
+    redraw();
 }
 
 // Maps the "Next Generation" button to `simulation.train()`
 document.getElementById("train").onclick = function() {
-    games.train();
+    for (var i = 0; i <100; i += 1) {
+        games.train();
+    }
 }
 
 const generationLabel = document.getElementById("generation");
@@ -88,7 +93,9 @@ function redraw() {
     var apple = games.games()[0].apple;
 
     ctxt.fillStyle = 'rgb(255, 0, 0)';
-    ctxt.fillRect(apple[0] * side_w, apple[1] * side_h, side_w, side_h);
+    ctxt.beginPath();
+    ctxt.roundRect(apple[0] * side_w, apple[1] * side_h, side_w, side_h, side_w * 0.1);
+    ctxt.fill();
 
     // Update the labels
     generationLabel.innerHTML = "Generation: " + games.generation();

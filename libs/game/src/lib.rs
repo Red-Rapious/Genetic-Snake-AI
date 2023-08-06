@@ -9,12 +9,12 @@ pub mod eye;
 pub mod snake;
 
 /// Gaussian Mutation chance of mutation
-const MUTATION_CHANCE: f64 = 0.01;
+const MUTATION_CHANCE: f64 = 0.1;
 /// Gaussian Mutation magnitude of mutation
-const MUTATION_COEFF: f32 = 0.03;
+const MUTATION_COEFF: f32 = 0.1;
 
 /// How many steps each snake gets to live
-const GENERATION_LENGTH: u32 = 1_000; 
+const GENERATION_LENGTH: u32 = 500; 
 
 pub struct Games {
     games: Vec<Game>,
@@ -23,8 +23,8 @@ pub struct Games {
 }
 
 impl Games {
-    pub fn new(fields: u32, width: u32, height: u32) -> Self {
-        let games = (0..fields).map(|_| Game::new(width, height)).collect();
+    pub fn new(number_games: u32, width: u32, height: u32) -> Self {
+        let games = (0..number_games).map(|_| Game::new(width, height)).collect();
 
         Self { 
             games,
@@ -56,6 +56,12 @@ impl Games {
         if self.age > GENERATION_LENGTH || !one_game_still_running {
             stats = Some(self.evolve());
         }
+
+        // If the snaked displayed on screen looses, directly trains towards the next generation
+        // to avoid the feeling of a "frozen" game.
+        /*if self.games[0].lost {
+            self.train();
+        }*/
 
         stats
     }

@@ -51,14 +51,14 @@ impl Eye {
             // Add to the vision
             vision[3*i+0] = match apple_distance {
                 None => 0.0,
-                Some(distance) => 1.0 / distance as f32
+                Some(distance) => 1.0// / distance as f32
             };
 
             vision[3*i+1] = 1.0 / wall_distance as f32;
 
             vision[3*i+2] = match tail_distance {
                 None => 0.0,
-                Some(distance) => 1.0 / distance as f32
+                Some(distance) => 1.0 // distance as f32
             };
         }
         vision
@@ -124,6 +124,25 @@ mod tests {
                 0.0, 0.5, 0.0, 
                 0.0, 0.5, 0.0, 
                 1.0, 0.5, 0.0, // down-left, where the apple is relatively to the snake's head
+                0.0, 0.5, 0.0, 
+                0.0, 0.5, 0.0
+            ]
+        );
+    }
+
+    #[test]
+    pub fn vision4x4() {
+        let eye = Eye::new();
+        let vision = eye.process_vision(&vec![(1,1)], (3, 3), 4, 4);
+
+        assert_eq!(vision, 
+            [//  A    W    T   // Apple, Wall, Tail
+                0.0, 1.0/3.0, 0.0, // right, then counter-clockwise
+                0.5, 1.0/3.0, 0.0, 
+                0.0, 1.0/3.0, 0.0, 
+                0.0, 0.5, 0.0, 
+                0.0, 0.5, 0.0, 
+                0.0, 0.5, 0.0, // down-left, where the apple is relatively to the snake's head
                 0.0, 0.5, 0.0, 
                 0.0, 0.5, 0.0
             ]

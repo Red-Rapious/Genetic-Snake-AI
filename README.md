@@ -52,7 +52,6 @@ You can play with the parameters of the game and genetic algorithm. They are def
 
 [`game/lib.rs`:](libs/game/src/libs.rs)
 - Gaussian mutation parameters: the chance of mutation, and coefficient of change.
-- The number of birds and foods in the simulation.
 - The `GENERATION_LENGTH`, maximum number of steps between two evolutions.
 
 [`index.js`:](www/index.js)
@@ -61,6 +60,16 @@ You can play with the parameters of the game and genetic algorithm. They are def
 [`neural-network/lib.rs`:](libs/neural-network/src/lib.rs)
 - `ACTIVATION_FUNCTION`, the activation function used by the neural network, can be chosen between `Sigmoid` or `ReLU`.
 - `LAYERS`, the layers of the neural network. Note that the input and output layers should not be changed, only the intermediate layers.
+
+[`game/snake.rs`:](libs/game/src/snake.rs)
+- `APPLE_COEFF`, the weight of apples compared to age in the definition of the fitness function.
+- `AGE_COEFF`, idem with age compared to apples.
+
+[`game-wasm/libs.rs`](libs/game-wasm/src/lib.rs)
+- The number of snakes trained at the same time.
+- The width and height of the grid in which the snakes are trained.
+
+Do not forget to `wasm-pack build --release` after changing parameters, outside of the `index.js` file.
 
 ## License
 This work is licensed under the [CC-BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) license.
