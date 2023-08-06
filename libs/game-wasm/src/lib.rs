@@ -4,9 +4,9 @@ use lib_game as gm;
 use lib_genetic_algorithm as ga;
 use serde::Serialize;
 
-const NUMBER_GAMES: u32 = 1_000;
-const WIDTH: u32 = 40;
-const HEIGHT: u32 = 40;
+const NUMBER_GAMES: u32 = 2_000;
+const WIDTH: u32 = 30;
+const HEIGHT: u32 = 30;
 
 #[wasm_bindgen]
 pub struct Games {

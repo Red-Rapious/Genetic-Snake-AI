@@ -1,6 +1,6 @@
 use crate::*;
 
-const APPLES_COEFF: u32 = 10;
+const APPLES_COEFF: u32 = 100;
 const AGE_COEFF: u32 = 1;
 
 pub struct Snake {
@@ -59,12 +59,15 @@ impl From<(&SnakeIndividual, u32, u32)> for Snake {
 
 impl ga::Individual for SnakeIndividual {
     fn fitness(&self) -> f32 {
-        (self.apples_eaten * APPLES_COEFF + self.age * AGE_COEFF) as f32
+        //(self.apples_eaten * APPLES_COEFF + self.age * AGE_COEFF) as f32
+
         /*if self.apples_eaten < 10 {
             (self.age * self.age) as f32 * 2.0_f32.powf(self.apples_eaten as f32)
         } else {
             (self.age * self.age) as f32 * 2.0_f32.powf(10.0) * (self.apples_eaten - 9) as f32
         }*/
+
+       i32::max(self.age as i32 - 15, 0) as f32
     }
 
     // Used inside the GeneticAlgorithm to convert an evolved chromosome back to an Individual

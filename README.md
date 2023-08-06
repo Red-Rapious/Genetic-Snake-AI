@@ -56,6 +56,7 @@ You can play with the parameters of the game and genetic algorithm. They are def
 
 [`index.js`:](www/index.js)
 - `FRAME_DELAY`, the minimum delay between each frame, in milliseconds. Use this to ajust the speed of the game. Values around `50` are close to the normal speed of the actual game, but small values increase the speed of the training process.
+- `GENERATIONS_TRAIN`, the number of generations trained by one click of the "Next Generation" button.
 
 [`neural-network/lib.rs`:](libs/neural-network/src/lib.rs)
 - `ACTIVATION_FUNCTION`, the activation function used by the neural network, can be chosen between `Sigmoid` or `ReLU`.

@@ -5,6 +5,8 @@ import * as gm from "lib-game-wasm";
 
 // Minimum delay between each frame, in milliseconds.
 const FRAME_DELAY = 0;
+// The number of generations trained by one click on the "Train" button
+const GENERATIONS_TRAIN = 10;
 
 var games = new gm.Games();
 
@@ -31,7 +33,7 @@ restartBtn.onclick = function() {
 
 // Maps the "Next Generation" button to `simulation.train()`
 document.getElementById("train").onclick = function() {
-    for (var i = 0; i <100; i += 1) {
+    for (var i = 0; i < GENERATIONS_TRAIN; i += 1) {
         games.train();
     }
 }
@@ -78,7 +80,13 @@ function redraw() {
         const x = snake[tail][0];
         const y = snake[tail][1];
 
-        ctxt.fillRect(x * side_w, y * side_h, side_w, side_h);
+        const size_ratio = 0.9;
+        ctxt.fillRect(
+            x * side_w + side_w * (1-size_ratio) / 2, 
+            y * side_h + side_h * (1-size_ratio) / 2, 
+            side_w * size_ratio, 
+            side_h * size_ratio
+        );
     }
 
     // Draw eyes
