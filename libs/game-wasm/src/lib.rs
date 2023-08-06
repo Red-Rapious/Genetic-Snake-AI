@@ -12,7 +12,7 @@ const HEIGHT: u32 = 30;
 pub struct Games {
     games: gm::Games,
     generation: usize,
-    stats: ga::Statistics
+    stats: ga::Statistics,
 }
 
 #[wasm_bindgen]
@@ -59,6 +59,10 @@ impl Games {
 
     pub fn avg_fitness(&self) -> usize {
         self.stats.avg_fitness() as usize
+    }
+
+    pub fn best_score(&self) -> usize {
+        self.stats.best_score() as usize
     }
 }
 

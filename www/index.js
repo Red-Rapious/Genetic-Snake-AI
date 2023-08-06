@@ -6,7 +6,7 @@ import * as gm from "lib-game-wasm";
 // Minimum delay between each frame, in milliseconds.
 const FRAME_DELAY = 0;
 // The number of generations trained by one click on the "Train" button
-const GENERATIONS_TRAIN = 10;
+const GENERATIONS_TRAIN = 500;
 
 var games = new gm.Games();
 
@@ -39,6 +39,7 @@ document.getElementById("train").onclick = function() {
 }
 
 const generationLabel = document.getElementById("generation");
+const bestScoreLabel = document.getElementById("best-score");
 const minFitnessLabel = document.getElementById("min-fitness");
 const maxFitnessLabel = document.getElementById("max-fitness");
 const averageFitnessLabel = document.getElementById("average-fitness");
@@ -107,8 +108,9 @@ function redraw() {
 
     // Update the labels
     generationLabel.innerHTML = "Generation: " + games.generation();
-    minFitnessLabel.innerHTML = "Minimum Fitness: " + games.min_fitness();
-    maxFitnessLabel.innerHTML = "Maximum Fitness: " + games.max_fitness();
+    bestScoreLabel.innerHTML = "Best Score: " + games.best_score();
+    minFitnessLabel.innerHTML = "Min.Fitness: " + games.min_fitness();
+    maxFitnessLabel.innerHTML = "Max. Fitness: " + games.max_fitness();
     averageFitnessLabel.innerHTML = "Average Fitness: " + games.avg_fitness();
 
     if (!gamePaused) {

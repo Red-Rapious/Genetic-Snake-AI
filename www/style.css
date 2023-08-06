@@ -41,12 +41,12 @@ h1 a:hover {
     margin-left: 30px;
 }
 
-#train, label, #restart, #generation, #min-fitness, #max-fitness, #average-fitness {
+#train, label, #restart, #best-score, #generation, #min-fitness, #max-fitness, #average-fitness {
     font-size: medium;
     font-weight: bold;
 }
 
-label, #generation, #min-fitness, #max-fitness, #average-fitness {
+label, #generation, #best-score, #min-fitness, #max-fitness, #average-fitness {
     color: white;
 }
 
@@ -72,10 +72,10 @@ button:hover {
     justify-content: center;
 }
 
-#generation, #min-fitness, #max-fitness, #average-fitness {
+#generation, #best-score, #min-fitness, #max-fitness, #average-fitness {
     margin-left: 25px;
 }
 
-#generation {
-    margin-right: 100px;
+#best-score {
+    margin-right: 80px;
 }

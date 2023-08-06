@@ -48,7 +48,7 @@ If everything goes as planned, your terminal will display:
 Enter `http://localhost:8080/` (or any other given address) in your favorite web browser, and the simulation should start.
 
 ## Parameters
-You can play with the parameters of the game and genetic algorithm. They are defined as constants in the following files.
+You can play with the parameters of the game and genetic algorithm. They are defined as constants in the following files:
 
 [`game/lib.rs`:](libs/game/src/libs.rs)
 - Gaussian mutation parameters: the chance of mutation, and coefficient of change.
@@ -65,6 +65,7 @@ You can play with the parameters of the game and genetic algorithm. They are def
 [`game/snake.rs`:](libs/game/src/snake.rs)
 - `APPLE_COEFF`, the weight of apples compared to age in the definition of the fitness function.
 - `AGE_COEFF`, idem with age compared to apples.
+> Note: you can even play with the mathematical formula to compute the fitness function, defined towards the end of [`snake.rs`](libs/game/src/snake.rs).
 
 [`game-wasm/libs.rs`](libs/game-wasm/src/lib.rs)
 - The number of snakes trained at the same time.

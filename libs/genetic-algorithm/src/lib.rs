@@ -52,6 +52,7 @@ impl<S> GeneticAlgorithm<S>
 }
 
 pub trait Individual {
+    fn score(&self) -> u32;
     fn fitness(&self) -> f32;
     fn genome(&self) -> &Vec<f32>;
     fn create(genom: Vec<f32>) -> Self;

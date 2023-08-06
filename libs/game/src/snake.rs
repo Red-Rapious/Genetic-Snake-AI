@@ -82,4 +82,8 @@ impl ga::Individual for SnakeIndividual {
     fn genome(&self) -> &Vec<f32> {
         &self.genome
     }
+
+    fn score(&self) -> u32 {
+        self.apples_eaten
+    }
 }
