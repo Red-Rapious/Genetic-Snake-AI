@@ -6,7 +6,7 @@ import * as gm from "lib-game-wasm";
 // Minimum delay between each frame, in milliseconds.
 const FRAME_DELAY = 0;
 // The number of generations trained by one click on the "Train" button
-const GENERATIONS_TRAIN = 500;
+const GENERATIONS_TRAIN = 100;
 
 document.getElementById("train").textContent = "Train " + GENERATIONS_TRAIN + " Generation" + ((GENERATIONS_TRAIN > 1) ? "s" : "");
 

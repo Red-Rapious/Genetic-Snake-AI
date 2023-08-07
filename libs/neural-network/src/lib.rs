@@ -18,12 +18,15 @@ pub struct NeuralNetwork {
 }
 
 impl NeuralNetwork {
+    /// Initilises a neural network with random weights and biases. 
+    /// Each weight and bias' follows a normal distribution.
     pub fn random() -> Self {
         assert!(LAYERS.len() > 1);
         // Normal distribution sampler
         let normal = Normal::new(0.0, 1.0).unwrap();
         let mut rng = rand::thread_rng();
 
+        // Initialise random weights matrices with proper dimensions
         let weights = LAYERS
             .windows(2)
             .map(|shape| 
@@ -34,6 +37,7 @@ impl NeuralNetwork {
                 ))
             .collect();
 
+        // Initilise random biases vectors with proper width
         let biases = LAYERS
                 .windows(2)
                 .map(|shape| na::DVector::from_fn(
@@ -49,6 +53,7 @@ impl NeuralNetwork {
         }
     }
 
+    /// Given an input vector of proper dimension, computes the output of the neural network.
     pub fn feed_forward(&self, input: na::DVector<f32>) -> na::DVector<f32> {
         self.weights
             .iter()
@@ -61,43 +66,29 @@ impl NeuralNetwork {
             )
     }
 
-    /// Converts a full neural network to a vector of weights and biases.
-    pub fn to_weights(&self) -> Vec<f32> {
-        let mut weights = vec![]; // TODO change capacity
+    /// Converts a full neural network to a genome of weights and biases.
+    pub fn to_genome(&self) -> Vec<f32> {
+        let mut genome = Vec::with_capacity(868);
 
-        /*let _ = self.weights
-            .iter()
-            .map(|matrix| {
-                let _ = matrix
-                    .iter()
-                    .map(|&coeff| weights.push(coeff));
-            });*/
-
+        // Add weights to the genome
         for matrix in self.weights.iter() {
             for &coeff in matrix.iter() {
-                weights.push(coeff);
+                genome.push(coeff);
             }
         }
 
-        /*let _ = self.biases
-            .iter()
-            .map(|vect| {
-                let _ = vect
-                    .iter()
-                    .map(|&coeff| weights.push(coeff));
-            });*/
-
+        // Add biases to the genome
         for vector in self.biases.iter() {
             for &coeff in vector.iter() {
-                weights.push(coeff);
+                genome.push(coeff);
             }
         }
 
-        weights
+        genome
     }
 
-    /// Initializes a layer from given weights.
-    pub fn from_weights(weights: &Vec<f32>) -> Self {
+    /// Initializes a layer from given genome.
+    pub fn from_genome(genome: &Vec<f32>) -> Self {
         let mut weights_vect = vec![];
         let mut biases_vect = vec![];
         let mut cursor = 0;
@@ -105,7 +96,7 @@ impl NeuralNetwork {
         for shape in LAYERS.windows(2) {
             let mut matrix = Vec::with_capacity(shape[0]*shape[1]);
             for _ in 0..shape[0]*shape[1] {
-                matrix.push(weights[cursor]);
+                matrix.push(genome[cursor]);
                 cursor += 1;
             }
 
@@ -115,13 +106,13 @@ impl NeuralNetwork {
         for &width in LAYERS.iter().skip(1) {
             let mut vector = Vec::with_capacity(width);
             for _ in 0..width {
-                vector.push(weights[cursor]);
+                vector.push(genome[cursor]);
                 cursor += 1;
             }
             biases_vect.push(na::DVector::from_vec(vector));
         }
 
-        assert!(weights.len() == cursor);
+        assert!(genome.len() == cursor);
 
         Self { 
             weights: weights_vect, 

@@ -51,7 +51,7 @@ impl Eye {
             // Add to the vision
             vision[3*i+0] = match apple_distance {
                 None => 0.0,
-                Some(_distance) => 1.0// / distance as f32
+                Some(_distance) => 1.0 // distance as f32
             };
 
             vision[3*i+1] = 1.0 / wall_distance as f32;

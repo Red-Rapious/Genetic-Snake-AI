@@ -11,34 +11,6 @@ mod tests {
         mod initialisation {
             use super::*;
 
-            /*fn test(layers: Vec<usize>) {
-                let nn = NeuralNetwork::random(&layers);
-
-                for i in 0..layers.len()-2 {
-                    assert_eq!(nn.weights[i].shape(), (layers[i+1], layers[i]));
-                }
-            }
-
-            #[test]
-            fn small() {
-                test(vec![1, 2, 3, 4]);
-            }
-
-            #[test]
-            fn medium() {
-                test(vec![10, 20, 30, 40]);
-            }
-
-            #[test]
-            fn big() {
-                test(vec![10, 20, 30, 40, 30, 20, 10, 20, 30, 40]);
-            }
-
-            #[test]
-            fn huge() {
-                test((0..100).collect());
-            }*/
-
             #[test]
             fn test() {
                 let _ = NeuralNetwork::random();
@@ -67,15 +39,15 @@ mod tests {
             }
         }
 
-        mod weights {
+        mod genome {
             use super::*;
     
             #[test]
-            fn to_and_from_weights() {
+            fn to_and_from_genome() {
                 let nn = NeuralNetwork::random();
     
-                let weights = nn.to_weights();
-                let nn_bis = NeuralNetwork::from_weights(&weights);
+                let genome = nn.to_genome();
+                let nn_bis = NeuralNetwork::from_genome(&genome);
     
                 assert_eq!(nn, nn_bis);
             }
