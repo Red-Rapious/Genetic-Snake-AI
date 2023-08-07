@@ -9,9 +9,9 @@ pub mod eye;
 pub mod snake;
 
 /// Gaussian Mutation chance of mutation
-const MUTATION_CHANCE: f64 = 0.5;
+const MUTATION_CHANCE: f64 = 0.1;
 /// Gaussian Mutation magnitude of mutation
-const MUTATION_COEFF: f32 = 0.5;
+const MUTATION_COEFF: f32 = 0.1;
 
 /// How many steps each snake gets to live
 const GENERATION_LENGTH: u32 = 500; 

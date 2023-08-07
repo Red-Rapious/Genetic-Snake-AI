@@ -1,6 +1,6 @@
 extern crate nalgebra as na;
 use na::DMatrix;
-use rand::Rng;
+use rand_distr::{Normal, Distribution};
 
 pub use crate::activation_function::*;
 
@@ -20,6 +20,9 @@ pub struct NeuralNetwork {
 impl NeuralNetwork {
     pub fn random() -> Self {
         assert!(LAYERS.len() > 1);
+        // Normal distribution sampler
+        let normal = Normal::new(0.0, 1.0).unwrap();
+        let mut rng = rand::thread_rng();
 
         let weights = LAYERS
             .windows(2)
@@ -27,7 +30,7 @@ impl NeuralNetwork {
                 DMatrix::from_fn(
                     shape[1],
                     shape[0],
-                    |_, _| rand::thread_rng().gen()
+                    |_, _| normal.sample(&mut rng)
                 ))
             .collect();
 
@@ -35,7 +38,7 @@ impl NeuralNetwork {
                 .windows(2)
                 .map(|shape| na::DVector::from_fn(
                     shape[1],
-                    |_, _| rand::thread_rng().gen()
+                    |_, _| normal.sample(&mut rng)
                 ))
                 .collect();
 
