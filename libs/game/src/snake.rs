@@ -36,6 +36,7 @@ impl Snake {
     }
 }
 
+#[derive(Clone)]
 pub struct SnakeIndividual {
     apples_eaten: u32,
     age: u32,

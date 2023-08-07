@@ -10,7 +10,8 @@ pub struct GeneticAlgorithm<S>
 {
     selection_method: S,
     crossover_method: Box<dyn CrossoverMethod>,
-    mutation_method: Box<dyn MutationMethod>
+    mutation_method: Box<dyn MutationMethod>,
+    save_bests: usize
 }
 
 impl<S> GeneticAlgorithm<S> 
@@ -19,36 +20,46 @@ impl<S> GeneticAlgorithm<S>
     pub fn new(
         selection_method: S,
         crossover_method: impl CrossoverMethod + 'static,
-        mutation_method: impl MutationMethod + 'static
+        mutation_method: impl MutationMethod + 'static,
+        save_bests: usize
         ) -> Self {
         Self { 
             selection_method, 
             crossover_method: Box::new(crossover_method),
-            mutation_method: Box::new(mutation_method)
+            mutation_method: Box::new(mutation_method),
+            save_bests
         }
     }
 
     /// Given a population of individuals, selects, reproduces, and mutates the population.
-    pub fn evolve<I>(&self, population: &[I]) -> (Vec<I>, Statistics)
-        where I: Individual
+    pub fn evolve<I>(&self, population: &mut [I]) -> (Vec<I>, Statistics)
+        where I: Individual + Clone
     {
         assert!(!population.is_empty());
 
+        // Sort the population by decreasing fitness
+        population.sort_by(|i1, i2| i1.fitness().partial_cmp(&i2.fitness()).unwrap().reverse() );
+
         let new_population = population
             .iter()
-            .map(|_| {
-                // Selects two parents and extracts their genome
-                let parent_a = self.selection_method.select(population).genome();
-                let parent_b = self.selection_method.select(population).genome();
+            .enumerate()
+            .map(|(index, individual)| {
+                if index < self.save_bests {
+                    individual.clone()
+                } else {
+                    // Selects two parents and extracts their genome
+                    let parent_a = self.selection_method.select(population).genome();
+                    let parent_b = self.selection_method.select(population).genome();
 
-                // Apply crossover method to parents to create the genome of a child
-                let mut child = self.crossover_method.crossover(&parent_a, &parent_b);
+                    // Apply crossover method to parents to create the genome of a child
+                    let mut child = self.crossover_method.crossover(&parent_a, &parent_b);
 
-                // Mutates the child's genome
-                self.mutation_method.mutate(&mut child);
+                    // Mutates the child's genome
+                    self.mutation_method.mutate(&mut child);
 
-                // Convert the genome back to an individual
-                I::create(child)
+                    // Convert the genome back to an individual
+                    I::create(child)
+                }
             })
             .collect();
 

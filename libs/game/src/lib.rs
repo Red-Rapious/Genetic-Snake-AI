@@ -12,6 +12,8 @@ pub mod snake;
 const MUTATION_CHANCE: f64 = 0.5;
 /// Gaussian Mutation magnitude of mutation
 const MUTATION_COEFF: f32 = 0.5;
+/// The n-th best snakes saved by the genetic algorithm
+const SAVE_BESTS: usize = 10;
 
 /// How many steps each snake gets to live
 const GENERATION_LENGTH: u32 = 500; 
@@ -33,7 +35,8 @@ impl Games {
             genetic_algorithm: ga::GeneticAlgorithm::new(
                 ga::RouletteWheelSelection::new(),
                 ga::UniformCrossover::new(),
-                ga::GaussianMutation::new(MUTATION_CHANCE, MUTATION_COEFF)
+                ga::GaussianMutation::new(MUTATION_CHANCE, MUTATION_COEFF),
+                SAVE_BESTS
             ),
             age: 0,
             generation: 0
@@ -79,14 +82,14 @@ impl Games {
         self.generation += 1;
 
         // Convert the current Snakes to SnakeIndividuals
-        let current_population: Vec<SnakeIndividual> = self
+        let mut current_population: Vec<SnakeIndividual> = self
             .games
             .iter()
             .map(|game| SnakeIndividual::from(&game.snake))
             .collect();
 
         // Use the genetic algorithm to evolve the snake population
-        let (evolved_population, stats) = self.genetic_algorithm.evolve(&current_population);
+        let (evolved_population, stats) = self.genetic_algorithm.evolve(&mut current_population);
 
         // Replace the evolved snakes in the games
         for (game, snake_individual) in self.games.iter_mut().zip(evolved_population.iter()) {
