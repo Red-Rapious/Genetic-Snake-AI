@@ -9,9 +9,9 @@ pub mod eye;
 pub mod snake;
 
 /// Gaussian Mutation chance of mutation
-const MUTATION_CHANCE: f64 = 0.1;
+const MUTATION_CHANCE: f64 = 0.5;
 /// Gaussian Mutation magnitude of mutation
-const MUTATION_COEFF: f32 = 0.1;
+const MUTATION_COEFF: f32 = 0.5;
 
 /// How many steps each snake gets to live
 const GENERATION_LENGTH: u32 = 500; 
@@ -109,7 +109,8 @@ pub struct Game {
     height: u32,
     apple: (u32, u32),
     pub snake: Snake,
-    lost: bool
+    lost: bool,
+    direction: Direction4
 }
 
 impl Game {
@@ -123,7 +124,8 @@ impl Game {
             // random position for the apple
             apple: (rng.gen_range(0..width), rng.gen_range(0..height)),
             snake: Snake::new(width, height),
-            lost: false
+            lost: false,
+            direction: Direction4::Right
         }
     }
 
@@ -141,6 +143,10 @@ impl Game {
 
     pub fn apple(&self) -> (u32, u32) {
         self.apple
+    }
+
+    pub fn direction(&self) -> u8 {
+        self.direction.to_u8()
     }
 
     /// Handles one step of the game, including snake movement, collisions handling...
@@ -161,6 +167,7 @@ impl Game {
         }
 
         let direction = Direction4::from(maxi.0);
+        self.direction = direction;
         self.move_snake(direction);
     }
 
@@ -228,6 +235,7 @@ impl Game {
     }
 }
 
+#[derive(Clone, Copy)]
 pub enum Direction4 {
     Right,
     Up,
@@ -256,6 +264,16 @@ impl Direction4 {
             Up => (0, 1),
             Left => (-1, 0),
             Down => (0, -1),
+        }
+    }
+
+    pub fn to_u8(&self) -> u8 {
+        use self::Direction4::*;
+        match *self {
+            Right => 0,
+            Up => 1,
+            Left => 2,
+            Down => 3,
         }
     }
 }

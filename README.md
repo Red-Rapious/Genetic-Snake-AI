@@ -7,7 +7,7 @@ An Artificial Intelligence to play the game Snake, using a Genetic Algorithm.
 The goal is to build a simple Snake game, and to create an artificial intelligence to play the game, and hopefully get high enough scores.
 
 ### Motivation
-This project is a sequel to both [MLP-Digits-Recognition](https://github.com/Red-Rapious/MLP-Digits-Recognition) and [Genetic-Birds-Simulator](https://github.com/Red-Rapious/Genetic-Birds-Simulator). I decided to apply the genetic algorithm approach to a situation more complicated than the last time, the game of[Snake](https://en.wikipedia.org/wiki/Snake_(video_game_genre)).
+This project is a sequel to both [MLP-Digits-Recognition](https://github.com/Red-Rapious/MLP-Digits-Recognition) and [Genetic-Birds-Simulator](https://github.com/Red-Rapious/Genetic-Birds-Simulator). I decided to apply the genetic algorithm approach to a situation more complicated than the last time, the game of [Snake](https://en.wikipedia.org/wiki/Snake_(video_game_genre)).
 
 ### Technical description
 - The [`lib-neural-network`](libs/neural-network/src/lib.rs) library contains an implementation of a FFNN (Feed-Forward Neural Network). Conversely to my last two projects, I had performance in mind and used the [`nalgebra`](https://www.nalgebra.org) crate to optimise the computations of the Neural Network.
@@ -23,16 +23,13 @@ The simulation can run in any browser. To try it yourself, you will need:
 - [`wasm-pack`](https://rustwasm.github.io/wasm-pack/installer/), to compile Rust code into WebAssembly
 - [`npm`](https://www.npmjs.com/get-npm) for the front-end simulation
 
-In the `Genetic-Snake-AI` root folder, you can make sure that everything is working by running:
-```console
-$ cargo check && cargo test
-```
-Then, compile the Rust code to WebAssembly by running:
+In the `Genetic-Snake-AI` root folder, start by compiling the Rust code to WebAssembly by running:
 ```console
 $ cd libs/game-wasm
 $ wasm-pack build --release
 ```
-Finally, launch the front-end simulation by running:
+
+Then, launch the front-end game by running:
 ```console
 $ cd ../..
 $ cd www

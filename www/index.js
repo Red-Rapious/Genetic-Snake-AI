@@ -61,8 +61,9 @@ viewport.style.width = viewportWidth + 'px';
 viewport.style.height = viewportHeight + 'px';
 
 // Computes the side of one cell of the grid
-const width = games.games()[0].width;
-const height = games.games()[0].height;
+const games_list = games.games();
+const width = games_list[0].width;
+const height = games_list[0].height;
 const side_w = viewportWidth / width;
 const side_h = viewportHeight / height;
 
@@ -72,11 +73,12 @@ ctxt.scale(viewportScale, viewportScale);
 
 // Main rendering function
 function redraw() {
+    var games_list = games.games();
     ctxt.clearRect(0, 0, viewportWidth, viewportHeight);
     games.step();
 
     // Draw snake
-    const snake = games.games()[0].snake;
+    const snake = games_list[0].snake;
 
     ctxt.fillStyle = 'rgb(255, 255, 255)';
     for (var tail = 0; tail < snake.length; tail += 1) {
@@ -93,15 +95,35 @@ function redraw() {
     }
 
     // Draw eyes
+    const direction = games_list[0].direction;
+    ctxt.fillStyle = 'rgb(0, 0, 0)';
+
     const x0 = snake[0][0];
     const y0 = snake[0][1];
 
-    ctxt.fillStyle = 'rgb(0, 0, 0)';
-    ctxt.fillRect(x0 * side_w + side_w * 0.1, y0 * side_h + side_w * 0.1, side_w * 0.3, side_h * 0.3);
-    ctxt.fillRect(x0 * side_w + side_w * 0.6, y0 * side_h + side_w * 0.1, side_w * 0.3, side_h * 0.3);
+    if (direction == 0) {
+        // eyes on the right
+        ctxt.fillRect(x0 * side_w + side_w * 0.6, y0 * side_h + side_w * 0.1, side_w * 0.3, side_h * 0.3);
+        ctxt.fillRect(x0 * side_w + side_w * 0.6, y0 * side_h + side_w * 0.6, side_w * 0.3, side_h * 0.3);
+    }
+    else if (direction == 1) {
+        // eyes down
+        ctxt.fillRect(x0 * side_w + side_w * 0.1, y0 * side_h + side_w * 0.5, side_w * 0.3, side_h * 0.3);
+        ctxt.fillRect(x0 * side_w + side_w * 0.6, y0 * side_h + side_w * 0.5, side_w * 0.3, side_h * 0.3);
+    }
+    else if (direction == 2) {
+        // eyes on the left
+        ctxt.fillRect(x0 * side_w + side_w * 0.1, y0 * side_h + side_w * 0.1, side_w * 0.3, side_h * 0.3);
+        ctxt.fillRect(x0 * side_w + side_w * 0.1, y0 * side_h + side_w * 0.6, side_w * 0.3, side_h * 0.3);
+    }
+    else if (direction == 3) {
+        // eyes up
+        ctxt.fillRect(x0 * side_w + side_w * 0.1, y0 * side_h + side_w * 0.1, side_w * 0.3, side_h * 0.3);
+        ctxt.fillRect(x0 * side_w + side_w * 0.6, y0 * side_h + side_w * 0.1, side_w * 0.3, side_h * 0.3);
+    } 
 
     // Draw apple
-    const apple = games.games()[0].apple;
+    const apple = games_list[0].apple;
 
     ctxt.fillStyle = 'rgb(255, 0, 0)';
     ctxt.beginPath();

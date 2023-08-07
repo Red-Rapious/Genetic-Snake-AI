@@ -68,6 +68,7 @@ pub struct Game {
     width: u32,
     height: u32,
     snake: Vec<(u32, u32)>,
+    direction: u8,
     apple: (u32, u32)
 }
 
@@ -79,10 +80,14 @@ impl Game {
     pub fn apple(&self) -> JsValue {
         serde_wasm_bindgen::to_value(&self.apple).unwrap()
     }
+
+    pub fn direction(&self) -> u8 {
+        self.direction
+    }
 }
 
 impl From<&gm::Game> for Game {
     fn from(game: &gm::Game) -> Self {
-        Self { width: game.width(), height: game.height(), snake: game.body().clone(), apple: game.apple() }
+        Self { width: game.width(), height: game.height(), snake: game.body().clone(), apple: game.apple(), direction: game.direction() }
     }
 }
