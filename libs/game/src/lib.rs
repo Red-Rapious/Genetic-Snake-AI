@@ -34,7 +34,7 @@ impl Games {
             games,
             genetic_algorithm: ga::GeneticAlgorithm::new(
                 ga::RouletteWheelSelection::new(),
-                ga::UniformCrossover::new(),
+                ga::KPointsCrossover::new(1),
                 ga::GaussianMutation::new(MUTATION_CHANCE, MUTATION_COEFF),
                 SAVE_BESTS
             ),
