@@ -1,6 +1,7 @@
 use rand::Rng;
 
 pub trait CrossoverMethod {
+    /// Given the genomes of two parents, creates the genome of a child.
     fn crossover(&self, parent_a: &Vec<f32>, parent_b: &Vec<f32>) -> Vec<f32>;
 }
 
@@ -13,6 +14,8 @@ impl UniformCrossover {
 }
 
 impl CrossoverMethod for UniformCrossover {
+    /// Each gene of the genome has a 0.5 probability to come from each parent,
+    /// and is independant from other genes.
     fn crossover(&self, parent_a: &Vec<f32>, parent_b: &Vec<f32>) -> Vec<f32> {
         assert_eq!(parent_a.len(), parent_b.len());
 

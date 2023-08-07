@@ -1,7 +1,8 @@
 use rand::Rng;
 
 pub trait MutationMethod {
-    fn mutate(&self, child: &mut Vec<f32>);
+    /// Mutates some genes of the genome.
+    fn mutate(&self, genome: &mut Vec<f32>);
 }
 
 pub struct GaussianMutation {
@@ -18,10 +19,11 @@ impl GaussianMutation {
 }
 
 impl MutationMethod for GaussianMutation {
-    fn mutate(&self, child: &mut Vec<f32>) {
+    /// Each gene has a given probability to be changed from a random value with given coefficient.
+    fn mutate(&self, genome: &mut Vec<f32>) {
         let mut rng = rand::thread_rng();
 
-        for gene in child.iter_mut() {
+        for gene in genome.iter_mut() {
             if rng.gen_bool(self.chance) {
                 let sign = if rng.gen_bool(0.5) { 1.0 } else { -1.0 };
                 *gene += sign * self.coeff * rng.gen::<f32>();

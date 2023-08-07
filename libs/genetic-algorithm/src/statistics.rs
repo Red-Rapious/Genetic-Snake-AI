@@ -1,6 +1,7 @@
 use crate::*;
 
 #[derive(Clone, Debug)]
+/// Contains diverse statistics on one trained population.
 pub struct Statistics {
     min_fitness: f32,
     max_fitness: f32,
