@@ -11,7 +11,6 @@ const HEIGHT: u32 = 30;
 #[wasm_bindgen]
 pub struct Games {
     games: gm::Games,
-    generation: usize,
     stats: ga::Statistics,
 }
 
@@ -25,7 +24,7 @@ impl Games {
             .iter()
             .map(|game| SnakeIndividual::from(&game.snake)).collect();
 
-        Self { games, generation: 0, stats: ga::Statistics::new(&snakes_individuals) }
+        Self { games, stats: ga::Statistics::new(&snakes_individuals) }
     }
 
     pub fn games(&mut self) -> JsValue {
@@ -35,18 +34,16 @@ impl Games {
 
     pub fn step(&mut self) {
         if let Some(stats) = self.games.step() { 
-            self.generation += 1; 
             self.stats = stats;
         }
     }
 
     pub fn train(&mut self) {
         self.games.train();
-        self.generation += 1;
     }
 
     pub fn generation(&self) -> usize {
-        self.generation
+        self.games.generation
     }
 
     pub fn min_fitness(&self) -> usize {

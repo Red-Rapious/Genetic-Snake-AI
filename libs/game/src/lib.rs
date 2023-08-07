@@ -19,7 +19,8 @@ const GENERATION_LENGTH: u32 = 500;
 pub struct Games {
     games: Vec<Game>,
     genetic_algorithm: ga::GeneticAlgorithm<ga::RouletteWheelSelection>,
-    age: u32
+    age: u32,
+    pub generation: usize
 }
 
 impl Games {
@@ -33,7 +34,8 @@ impl Games {
                 ga::UniformCrossover::new(),
                 ga::GaussianMutation::new(MUTATION_CHANCE, MUTATION_COEFF)
             ),
-            age: 0
+            age: 0,
+            generation: 0
         }
     }
 
@@ -68,6 +70,7 @@ impl Games {
 
     fn evolve(&mut self) -> ga::Statistics {
         self.age = 0;
+        self.generation += 1;
 
         // Convert the current Snakes to SnakeIndividuals
         let current_population: Vec<SnakeIndividual> = self
