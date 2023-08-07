@@ -1,8 +1,10 @@
 use crate::*;
 
+// Coefficients used if the fitness is a linear combinaison of both.
 //const APPLES_COEFF: u32 = 100;
 //const AGE_COEFF: u32 = 1;
 
+/// A struct holding the body, brain, and eyes of the snake.
 pub struct Snake {
     pub(crate) body: Vec<(u32, u32)>,
     pub(crate) eye: Eye,
@@ -12,6 +14,7 @@ pub struct Snake {
 }
 
 impl Snake {
+    /// Creates a new Snake, in the middle of the grid, with a random brain.
     pub fn new(width: u32, height: u32) -> Self {
         assert!(width >= 3);
         //let mut rng = rand::thread_rng();
@@ -70,7 +73,6 @@ impl ga::Individual for SnakeIndividual {
        //i32::max(self.age as i32 - 15, 0) as f32
     }
 
-    // Used inside the GeneticAlgorithm to convert an evolved chromosome back to an Individual
     fn create(genom: Vec<f32>) -> Self {
         Self {
             apples_eaten: 0, // Useless values, except for genom. Might need to change that for clarity.

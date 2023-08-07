@@ -24,6 +24,7 @@ pub struct Games {
 }
 
 impl Games {
+    /// Initialises a new simulation, with random games inside.
     pub fn new(number_games: u32, width: u32, height: u32) -> Self {
         let games = (0..number_games).map(|_| Game::new(width, height)).collect();
 
@@ -43,11 +44,14 @@ impl Games {
         &self.games
     }
 
+    /// Move each game that is not yet lost one tick forward. 
+    /// Returns `None` if the population did not evolve, and `Some(stats)` if it did.
     pub fn step(&mut self) -> Option<ga::Statistics> {
         self.age += 1;
-        let mut one_game_still_running = false;
         let mut stats = None;
+        let mut one_game_still_running = false;
 
+        // Step each game that is not lost
         for game in self.games.iter_mut() {
             if !game.lost {
                 game.step();
@@ -55,6 +59,7 @@ impl Games {
             }
         }
 
+        // If every game is lost, or the countdown is over, the population evolves.
         if self.age > GENERATION_LENGTH || !one_game_still_running {
             stats = Some(self.evolve());
         }
@@ -68,6 +73,7 @@ impl Games {
         stats
     }
 
+    /// Evolves the population of snakes from the games.
     fn evolve(&mut self) -> ga::Statistics {
         self.age = 0;
         self.generation += 1;
@@ -90,6 +96,7 @@ impl Games {
         stats
     }
 
+    /// Fast-forward to the next generation.
     pub fn train(&mut self) -> ga::Statistics {
         loop {
             if let Some(stats) = self.step() { return stats; }
@@ -106,6 +113,7 @@ pub struct Game {
 }
 
 impl Game {
+    /// Initialises a new grid, with a new random snake.
     pub fn new(width: u32, height: u32) -> Self {
         let mut rng = rand::thread_rng();
 
@@ -135,6 +143,7 @@ impl Game {
         self.apple
     }
 
+    /// Handles one step of the game, including snake movement, collisions handling...
     pub fn step(&mut self) {
         self.snake.age += 1;
 
@@ -155,37 +164,42 @@ impl Game {
         self.move_snake(direction);
     }
 
+    /// Moves the snake and handles collisions with the walls and food.
     pub fn move_snake(&mut self, direction: Direction4) {
         let incrementer = direction.incrementer();
 
-        let moved_head = (self.snake.body[0].0 as i32 + incrementer.0, self.snake.body[0].1 as i32 + incrementer.1);
+        // The old position of the end of the tail. 
+        // Used when the tail must grown.
         let end_tail = self.snake.body[self.snake.body.len() - 1];
 
-        // The new head of the snake is out of the grid
+        // The new position of the head after movement.
+        let moved_head = (self.snake.body[0].0 as i32 + incrementer.0, self.snake.body[0].1 as i32 + incrementer.1);
+
+        // If the new head of the snake is out of the grid, the game is lost.
         if !(0 <= moved_head.0 && moved_head.0 < self.width as i32 && 0 <= moved_head.1 && moved_head.1 < self.height as i32)  {
             self.loose();
             return;
         } 
 
-        // Move the tail: each bit takes the position of the previous bit
+        // Move the tail: each bit takes the position of the previous bit.
         for i in (1..self.snake.body.len()).rev() {
             self.snake.body[i] = self.snake.body[i-1];
         }
 
-        // Move the head
+        // Move the head.
         self.snake.body[0] = (moved_head.0 as u32, moved_head.1 as u32);
 
         /* Handle collisions with the tail */
         let (x, y) = moved_head;
-        for (tx, ty) in self.snake.body.iter().skip(1) {
-            if x == *tx as i32 && y == *ty as i32 {
+        for (tx, ty) in self.snake.body.iter().skip(1) { // for each bit different of the head
+            if x == *tx as i32 && y == *ty as i32 { // if head == bit
                 self.loose();
                 return;
             }
         }
 
         /* Handle collisions with the apple */
-        if x == self.apple.0 as i32 && y == self.apple.1 as i32 {
+        if x == self.apple.0 as i32 && y == self.apple.1 as i32 { // if head == apple
             // Increase tail size
             self.snake.body.push(end_tail);
 
@@ -202,12 +216,13 @@ impl Game {
         self.lost = true;
     }
 
+    /// Resets the game with a new evolved snake.
     pub fn reset(&mut self, snake: Snake) {
-        // Replace old snake with new snake, and reset `lost`
+        // Replace old snake with new snake, and reset the `lost` boolean.
         self.snake = snake;
         self.lost = false;
 
-        // Change apple position for visibility
+        // Change apple position for visibility. This way, it is easier to spot generation changes.
         let mut rng = rand::thread_rng();
         self.apple = (rng.gen_range(0..self.width), rng.gen_range(0..self.height));
     }

@@ -7,6 +7,12 @@ impl Eye {
         Self
     }
 
+    /// Given the position of the snake's body, the apple, and the dimensions of the grid,
+    /// computes the vision of the snake.
+    /// In each of the 8 directions (including diagonals), the snakes sees:
+    /// - distance to apple
+    /// - distance to wall
+    /// - distance to tail
     pub fn process_vision(&self, body: &Vec<(u32, u32)>, apple: (u32, u32), width: u32, height: u32) -> [f32; 8*3] {
         assert!(body.len() >= 1);
 
@@ -14,6 +20,8 @@ impl Eye {
         for (i, direction) in Direction8::iterator().enumerate() {
             let incrementer = direction.incrementer();
 
+            // The apple and tail might not be seen, hence the Option type.
+            // The wall is certain to be seen.
             let mut apple_distance: Option<u32> = None;
             let wall_distance: u32;
             let mut tail_distance: Option<u32> = None;
@@ -22,6 +30,7 @@ impl Eye {
             let mut y = body[0].1 as i32;
             let mut distance = 0;
 
+            // While the wall is not seen, walk in the given direction
             loop {
                 // Walk one step
                 x += incrementer.0;
@@ -48,7 +57,7 @@ impl Eye {
                 }
             }
 
-            // Add to the vision
+            // Add to the vision array
             vision[3*i+0] = match apple_distance {
                 None => 0.0,
                 Some(_distance) => 1.0 // distance as f32
@@ -96,13 +105,13 @@ impl Direction8 {
         use self::Direction8::*;
         match *self {
             Right => (1, 0),
-            Up => (0, 1),
-            Left => (-1, 0),
-            Down => (0, -1),
             UpRight => (1, 1),
+            Up => (0, 1),
             UpLeft => (-1, 1),
+            Left => (-1, 0),
+            DownLeft => (-1, -1),
+            Down => (0, -1),
             DownRight => (1, -1),
-            DownLeft => (-1, -1)
         }
     }
 }
