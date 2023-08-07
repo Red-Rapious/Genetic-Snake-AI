@@ -74,7 +74,7 @@ function redraw() {
     games.step();
 
     // Draw snake
-    var snake = games.games()[0].snake;
+    const snake = games.games()[0].snake;
 
     ctxt.fillStyle = 'rgb(255, 255, 255)';
     for (var tail = 0; tail < snake.length; tail += 1) {
@@ -99,7 +99,7 @@ function redraw() {
     ctxt.fillRect(x0 * side_w + side_w * 0.6, y0 * side_h + side_w * 0.1, side_w * 0.3, side_h * 0.3);
 
     // Draw apple
-    var apple = games.games()[0].apple;
+    const apple = games.games()[0].apple;
 
     ctxt.fillStyle = 'rgb(255, 0, 0)';
     ctxt.beginPath();

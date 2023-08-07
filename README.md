@@ -1,6 +1,8 @@
 # Genetic-Snake-AI
 An Artificial Intelligence to play the game Snake, using a Genetic Algorithm.
 
+![Game banner](assets/game-banner.png)
+
 ## About
 The goal is to build a simple Snake game, and to create an artificial intelligence to play the game, and hopefully get high enough scores.
 
@@ -46,6 +48,8 @@ If everything goes as planned, your terminal will display:
 ```
 
 Enter `http://localhost:8080/` (or any other given address) in your favorite web browser, and the simulation should start.
+
+![Game Screenshot](assets/game-screenshot.png)
 
 ## Parameters
 You can play with the parameters of the game and genetic algorithm. They are defined as constants in the following files:
