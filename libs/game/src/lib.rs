@@ -61,9 +61,9 @@ impl Games {
 
         // If the snaked displayed on screen looses, directly trains towards the next generation
         // to avoid the feeling of a "frozen" game.
-        /*if self.games[0].lost {
-            self.train();
-        }*/
+        if self.games[0].lost {
+            return Some(self.train());
+        }
 
         stats
     }
@@ -90,9 +90,9 @@ impl Games {
         stats
     }
 
-    pub fn train(&mut self) {
+    pub fn train(&mut self) -> ga::Statistics {
         loop {
-            if let Some(_) = self.step() { break; }
+            if let Some(stats) = self.step() { return stats; }
         }
     }
 }
