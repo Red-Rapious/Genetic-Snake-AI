@@ -6,9 +6,7 @@ import * as gm from "lib-game-wasm";
 // Minimum delay between each frame, in milliseconds.
 const FRAME_DELAY = 0;
 // The number of generations trained by one click on the "Train" button
-const GENERATIONS_TRAIN = 100;
-
-document.getElementById("train").textContent = "Train " + GENERATIONS_TRAIN + " Generation" + ((GENERATIONS_TRAIN > 1) ? "s" : "");
+const GENERATIONS_TRAIN = 50;
 
 var games = new gm.Games();
 
@@ -34,11 +32,15 @@ restartBtn.onclick = function() {
 }
 
 // Maps the "Next Generation" button to `simulation.train()`
-document.getElementById("train").onclick = function() {
+const trainBtn = document.getElementById("train");
+trainBtn.onclick = function() {
     for (var i = 0; i < GENERATIONS_TRAIN; i += 1) {
         games.train();
     }
+    trainBtn.innerHTML = "Train " + GENERATIONS_TRAIN + " Generation" + ((GENERATIONS_TRAIN > 1) ? "s" : "");
 }
+
+trainBtn.innerHTML = "Train " + GENERATIONS_TRAIN + " Generation" + ((GENERATIONS_TRAIN > 1) ? "s" : "");
 
 const generationLabel = document.getElementById("generation");
 const bestScoreLabel = document.getElementById("best-score");
@@ -131,11 +133,11 @@ function redraw() {
     ctxt.fill();
 
     // Update the labels
-    generationLabel.innerHTML = "Generation: " + games.generation();
-    bestScoreLabel.innerHTML = "Best Score (gen.): " + games.best_score();
-    minFitnessLabel.innerHTML = "Min. Fitness: " + games.min_fitness();
-    maxFitnessLabel.innerHTML = "Max. Fitness: " + games.max_fitness();
-    averageFitnessLabel.innerHTML = "Average Fitness: " + games.avg_fitness();
+    generationLabel.textContent = "Generation: " + games.generation();
+    bestScoreLabel.textContent = "Best Score (gen.): " + games.best_score();
+    minFitnessLabel.textContent = "Min. Fitness: " + games.min_fitness();
+    maxFitnessLabel.textContent = "Max. Fitness: " + games.max_fitness();
+    averageFitnessLabel.textContent = "Average Fitness: " + games.avg_fitness();
 
     if (!gamePaused) {
         setTimeout(function() { requestAnimationFrame(redraw) }, FRAME_DELAY);

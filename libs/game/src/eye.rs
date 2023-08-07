@@ -67,7 +67,7 @@ impl Eye {
 
             vision[3*i+2] = match tail_distance {
                 None => 0.0,
-                Some(_distance) => 1.0 // distance as f32
+                Some(_distance) => 1.0 / distance as f32
             };
         }
         vision
