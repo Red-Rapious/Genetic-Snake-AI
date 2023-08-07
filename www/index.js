@@ -8,6 +8,8 @@ const FRAME_DELAY = 0;
 // The number of generations trained by one click on the "Train" button
 const GENERATIONS_TRAIN = 500;
 
+document.getElementById("train").textContent = "Train " + GENERATIONS_TRAIN + " Generation" + ((GENERATIONS_TRAIN > 1) ? "s" : "");
+
 var games = new gm.Games();
 
 // The `pause` checkbox pauses the game by stoping the main rendering function
