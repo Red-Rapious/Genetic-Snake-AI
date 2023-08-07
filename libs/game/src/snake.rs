@@ -44,7 +44,7 @@ impl From<&Snake> for SnakeIndividual {
         Self { 
             apples_eaten: snake.apples_eaten, 
             age: snake.age, 
-            genome: snake.brain.to_weights(),
+            genome: snake.brain.to_genome(),
         }
     }
 }
@@ -52,7 +52,7 @@ impl From<&Snake> for SnakeIndividual {
 impl From<(&SnakeIndividual, u32, u32)> for Snake {
     fn from((snake_individual, width, height): (&SnakeIndividual, u32, u32)) -> Self {
         let mut snake = Snake::new(width, height);
-        snake.brain = nn::NeuralNetwork::from_weights(&snake_individual.genome);
+        snake.brain = nn::NeuralNetwork::from_genome(&snake_individual.genome);
         snake
     }
 }
