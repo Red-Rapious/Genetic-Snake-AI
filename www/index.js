@@ -108,8 +108,8 @@ function redraw() {
 
     // Update the labels
     generationLabel.innerHTML = "Generation: " + games.generation();
-    bestScoreLabel.innerHTML = "Best Score: " + games.best_score();
-    minFitnessLabel.innerHTML = "Min.Fitness: " + games.min_fitness();
+    bestScoreLabel.innerHTML = "Best Score (gen.): " + games.best_score();
+    minFitnessLabel.innerHTML = "Min. Fitness: " + games.min_fitness();
     maxFitnessLabel.innerHTML = "Max. Fitness: " + games.max_fitness();
     averageFitnessLabel.innerHTML = "Average Fitness: " + games.avg_fitness();
 
