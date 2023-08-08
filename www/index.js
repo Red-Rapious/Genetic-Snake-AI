@@ -6,7 +6,7 @@ import * as gm from "lib-game-wasm";
 // Minimum delay between each frame, in milliseconds.
 const FRAME_DELAY = 0;
 // The number of generations trained by one click on the "Train" button
-const GENERATIONS_TRAIN = 50;
+const GENERATIONS_TRAIN = 80;
 // Divide the displayed fitness by a big number to avoid showing huge fitnesses
 const FITNESS_UNITS = 10000;
 

@@ -18,7 +18,7 @@ const SAVE_BESTS: usize = 100;
 /// How many steps each snake gets to live without eating apples.
 const MAX_AGE: u32 = 500;
 /// Everytime the snakes eats an apple, its age decreases by this amount.
-const APPLE_LIFETIME_GAIN: i32 = 0;
+const APPLE_LIFETIME_GAIN: i32 = 50;
 
 pub struct Games {
     games: Vec<Game>,

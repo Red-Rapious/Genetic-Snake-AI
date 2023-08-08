@@ -40,6 +40,8 @@ Using the defaults parameters, snakes tend to avoid walls after the 10th generat
 
 The best snakes of the 50th generations directly move towards apple, and manage to get scores between 15 and 20 in the given 500 maximum moves.
 
+Overall, I have observed scores going up to 61 after around 120 generations. The main cause of death for high generations seem to be complex tail positions of which the snake cannot escape.
+
 ## Workspace description
 - The [`lib-neural-network`](libs/neural-network/src/lib.rs) library contains an implementation of a FFNN (Feed-Forward Neural Network). Conversely to my last two projects, I had performance in mind and used the [`nalgebra`](https://www.nalgebra.org) crate to optimise the computations of the Neural Network.
 - The [`lib-genetic-algorithm`](libs/genetic-algorithm/src/lib.rs) library implements a genetic algorithm, which selects, crossovers, and mutates individuals.

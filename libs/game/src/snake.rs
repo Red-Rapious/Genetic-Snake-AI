@@ -65,11 +65,11 @@ impl ga::Individual for SnakeIndividual {
     fn fitness(&self) -> u32 {
         //(self.apples_eaten * APPLES_COEFF + self.age * AGE_COEFF)
 
-        if self.apples_eaten < 10 {
+        //if self.apples_eaten < 10 {
             (self.age * self.age) * 2_u32.pow(self.apples_eaten) * (APPLES_COEFF * self.apples_eaten + 1)
-        } else {
-            (self.age * self.age) * 2_u32.pow(10) * (self.apples_eaten - 9) * (APPLES_COEFF * 10)
-        }
+        //} else {
+        //    (self.age * self.age) * 2_u32.pow(10) * (self.apples_eaten - 9) * (APPLES_COEFF * 10)
+        //}
     }
 
     fn create(genom: Vec<f32>) -> Self {
