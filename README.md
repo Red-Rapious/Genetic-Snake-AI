@@ -31,7 +31,7 @@ By default, each generation is made of 2000 snakes playing simultaneously. Once 
 Then, the next generation is created using three steps:
 - **Selection:** two parents are selected using Roulette Wheel Selection, meaning that the higher the fitness, the more chances a snake has to be selected.
 - **Crossover:** the two parent's brain are fused to create the child's brain. I used to use Uniform Crossover, but instead changed for 1-Point Crossover to improve the training process.
-- **Mutation:** noise is added to the weights and biases of the child's brain, using Gaussion Mutation.
+- **Mutation:** noise is added to the weights and biases of the child's brain, using Gaussian Mutation.
 
 On top of that, the best `n` snakes of each generations are saved and added to the next generation without alteration.
 
