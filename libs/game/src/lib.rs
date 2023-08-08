@@ -34,7 +34,7 @@ impl Games {
             games,
             genetic_algorithm: ga::GeneticAlgorithm::new(
                 ga::RouletteWheelSelection::new(),
-                ga::KPointsCrossover::new(2),
+                ga::KPointsCrossover::new(1),
                 ga::GaussianMutation::new(MUTATION_CHANCE, MUTATION_COEFF),
                 SAVE_BESTS
             ),
@@ -162,7 +162,7 @@ impl Game {
         /* Process brain */
         let directions_activation = self.snake.brain.feed_forward(na::DVector::from(vision.to_vec()));
         // Choose the index of the maximum activation
-        let mut maxi = (0, 0.0);
+        let mut maxi = (0, directions_activation[0]);
         for i in 1..directions_activation.shape().0 {
             if directions_activation[i] > maxi.1 {
                 maxi = (i, directions_activation[i]);

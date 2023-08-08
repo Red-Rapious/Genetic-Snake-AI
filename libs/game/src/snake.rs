@@ -1,7 +1,7 @@
 use crate::*;
 
 // Coefficients used if the fitness is a linear combinaison of both.
-//const APPLES_COEFF: u32 = 100;
+const APPLES_COEFF: u32 = 100;
 //const AGE_COEFF: u32 = 1;
 
 /// A struct holding the body, brain, and eyes of the snake.
@@ -66,7 +66,7 @@ impl ga::Individual for SnakeIndividual {
         //(self.apples_eaten * APPLES_COEFF + self.age * AGE_COEFF) as f32
 
         if self.apples_eaten < 10 {
-            (self.age * self.age) as f32 * 2.0_f32.powf(self.apples_eaten as f32)
+            (self.age * self.age) as f32 * 2.0_f32.powf(self.apples_eaten as f32) * ((APPLES_COEFF * self.apples_eaten + 1) as f32)
         } else {
             (self.age * self.age) as f32 * 2.0_f32.powf(10.0) * (self.apples_eaten - 9) as f32
         }
