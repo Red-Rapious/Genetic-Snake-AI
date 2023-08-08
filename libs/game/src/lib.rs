@@ -15,8 +15,10 @@ const MUTATION_COEFF: f32 = 0.5;
 /// The n-th best snakes saved by the genetic algorithm
 const SAVE_BESTS: usize = 100;
 
-/// How many steps each snake gets to live
-const GENERATION_LENGTH: u32 = 500; 
+/// How many steps each snake gets to live without eating apples.
+const MAX_AGE: u32 = 500;
+/// Everytime the snakes eats an apple, its age decreases by this amount.
+const APPLE_LIFETIME_GAIN: i32 = 0;
 
 pub struct Games {
     games: Vec<Game>,
@@ -63,7 +65,7 @@ impl Games {
         }
 
         // If every game is lost, or the countdown is over, the population evolves.
-        if self.age > GENERATION_LENGTH || !one_game_still_running {
+        if !one_game_still_running {
             stats = Some(self.evolve());
         }
 
@@ -155,6 +157,10 @@ impl Game {
     /// Handles one step of the game, including snake movement, collisions handling...
     pub fn step(&mut self) {
         self.snake.age += 1;
+        if self.snake.age == MAX_AGE {
+            self.loose();
+            return;
+        }
 
         /* Process vision */
         let vision = self.snake.eye.process_vision(&self.snake.body, self.apple, self.width, self.height);
@@ -219,6 +225,9 @@ impl Game {
 
             // Update apples_eaten
             self.snake.apples_eaten += 1;
+
+            // Decrease age to gain more lifetime
+            self.snake.age = i32::max(0, self.snake.age as i32 - APPLE_LIFETIME_GAIN) as u32;
         }
     }
 

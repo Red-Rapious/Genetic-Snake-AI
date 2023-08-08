@@ -55,7 +55,7 @@ You can play with the parameters of the game and genetic algorithm. They are def
 
 [`game/lib.rs`:](libs/game/src/libs.rs)
 - Gaussian mutation parameters: the chance of mutation, and coefficient of change.
-- The `GENERATION_LENGTH`, maximum number of steps between two evolutions.
+- The `MAX_AGE`, maximum number of steps between two evolutions.
 
 [`index.js`:](www/index.js)
 - `FRAME_DELAY`, the minimum delay between each frame, in milliseconds. Use this to ajust the speed of the game. Values around `50` are close to the normal speed of the actual game, but small values increase the speed of the training process.
@@ -65,10 +65,10 @@ You can play with the parameters of the game and genetic algorithm. They are def
 - `ACTIVATION_FUNCTION`, the activation function used by the neural network, can be chosen between `Sigmoid` or `ReLU`.
 - `LAYERS`, the layers of the neural network. Note that the input and output layers should not be changed, only the intermediate layers.
 
-[`game/snake.rs`:](libs/game/src/snake.rs)
+<!--[`game/snake.rs`:](libs/game/src/snake.rs)
 - `APPLE_COEFF`, the weight of apples compared to age in the definition of the fitness function.
 - `AGE_COEFF`, idem with age compared to apples.
-> Note: you can even play with the mathematical formula to compute the fitness function, defined towards the end of [`snake.rs`](libs/game/src/snake.rs).
+> Note: you can even play with the mathematical formula to compute the fitness function, defined towards the end of [`snake.rs`](libs/game/src/snake.rs).-->
 
 [`game-wasm/libs.rs`](libs/game-wasm/src/lib.rs)
 - The number of snakes trained at the same time.
