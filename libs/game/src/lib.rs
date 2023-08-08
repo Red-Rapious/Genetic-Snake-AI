@@ -121,17 +121,25 @@ pub struct Game {
 impl Game {
     /// Initialises a new grid, with a new random snake.
     pub fn new(width: u32, height: u32) -> Self {
-        let mut rng = rand::thread_rng();
-
+        let snake = Snake::new(width, height);
         Self {
             width,
             height,
             // random position for the apple
-            apple: (rng.gen_range(0..width), rng.gen_range(0..height)),
-            snake: Snake::new(width, height),
+            apple: Game::new_apple_position(width, height, &snake.body),
+            snake: snake,
             lost: false,
             direction: Direction4::Right
         }
+    }
+
+    fn new_apple_position(width: u32, height: u32, body: &Vec<(u32, u32)>) -> (u32, u32) {
+        let mut rng = rand::thread_rng();
+        let mut apple = (rng.gen_range(0..width), rng.gen_range(0..height));
+        while body.contains(&apple) {
+            apple = (rng.gen_range(0..width), rng.gen_range(0..height));
+        }
+        apple
     }
 
     pub fn width(&self) -> u32 {
@@ -220,8 +228,7 @@ impl Game {
             self.snake.body.push(end_tail);
 
             // Respawn new apple
-            let mut rng = rand::thread_rng();
-            self.apple = (rng.gen_range(0..self.width), rng.gen_range(0..self.height));
+            self.apple = Game::new_apple_position(self.width, self.height, &self.snake.body);
 
             // Update apples_eaten
             self.snake.apples_eaten += 1;
@@ -242,8 +249,7 @@ impl Game {
         self.lost = false;
 
         // Change apple position for visibility. This way, it is easier to spot generation changes.
-        let mut rng = rand::thread_rng();
-        self.apple = (rng.gen_range(0..self.width), rng.gen_range(0..self.height));
+        self.apple = Game::new_apple_position(self.width, self.height, &self.snake.body);
     }
 }
 
