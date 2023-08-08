@@ -73,7 +73,7 @@ pub trait Individual {
     fn score(&self) -> u32;
     /// The fitness function, two rank the effectivness of an individual's brain.
     /// For example, an expression that combines score and lifetime.
-    fn fitness(&self) -> f32;
+    fn fitness(&self) -> u32;
     /// Convert an individual to its genome, an array that contains weights and biases of the brain.
     fn genome(&self) -> &Vec<f32>;
     /// Convert a genome back to an individual.

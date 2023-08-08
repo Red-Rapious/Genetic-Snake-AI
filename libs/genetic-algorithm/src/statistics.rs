@@ -3,9 +3,9 @@ use crate::*;
 #[derive(Clone, Debug)]
 /// Contains diverse statistics on one trained population.
 pub struct Statistics {
-    min_fitness: f32,
-    max_fitness: f32,
-    average_fitness: f32,
+    min_fitness: u32,
+    max_fitness: u32,
+    average_fitness: u32,
     best_score: u32
 }
 
@@ -18,7 +18,7 @@ impl Statistics {
 
         let mut min_fitness = population[0].fitness();
         let mut max_fitness = population[0].fitness();
-        let mut sum_fitness = 0.0;
+        let mut sum_fitness = 0;
         let mut best_score: u32 = 0;
 
         for individual in population {
@@ -33,20 +33,20 @@ impl Statistics {
         Self {
             min_fitness,
             max_fitness,
-            average_fitness: sum_fitness / (population.len() as f32),
+            average_fitness: sum_fitness / population.len() as u32,
             best_score
         }
     }
 
-    pub fn min_fitness(&self) -> f32 {
+    pub fn min_fitness(&self) -> u32 {
         self.min_fitness
     }
 
-    pub fn max_fitness(&self) -> f32 {
+    pub fn max_fitness(&self) -> u32 {
         self.max_fitness
     }
 
-    pub fn avg_fitness(&self) -> f32 {
+    pub fn avg_fitness(&self) -> u32 {
         self.average_fitness
     }
 

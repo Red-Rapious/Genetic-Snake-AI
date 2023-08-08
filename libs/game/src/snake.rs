@@ -17,9 +17,9 @@ impl Snake {
     /// Creates a new Snake, in the middle of the grid, with a random brain.
     pub fn new(width: u32, height: u32) -> Self {
         assert!(width >= 3);
-        //let mut rng = rand::thread_rng();
-        let x = width/2;//rng.gen_range(2..width);
-        let y = height/2;//rng.gen_range(0..height);
+
+        let x = width/2;
+        let y = height/2;
         let body = vec![
             (x+2, y),
             (x+1, y),
@@ -62,13 +62,13 @@ impl From<(&SnakeIndividual, u32, u32)> for Snake {
 }
 
 impl ga::Individual for SnakeIndividual {
-    fn fitness(&self) -> f32 {
-        //(self.apples_eaten * APPLES_COEFF + self.age * AGE_COEFF) as f32
+    fn fitness(&self) -> u32 {
+        //(self.apples_eaten * APPLES_COEFF + self.age * AGE_COEFF)
 
         if self.apples_eaten < 10 {
-            (self.age * self.age) as f32 * 2.0_f32.powf(self.apples_eaten as f32) * ((APPLES_COEFF * self.apples_eaten + 1) as f32)
+            (self.age * self.age) * 2_u32.pow(self.apples_eaten) * (APPLES_COEFF * self.apples_eaten + 1)
         } else {
-            (self.age * self.age) as f32 * 2.0_f32.powf(10.0) * (self.apples_eaten - 9) as f32 * ((APPLES_COEFF * 10) as f32)
+            (self.age * self.age) * 2_u32.pow(10) * (self.apples_eaten - 9) * (APPLES_COEFF * 10)
         }
     }
 
