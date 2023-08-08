@@ -68,10 +68,8 @@ impl ga::Individual for SnakeIndividual {
         if self.apples_eaten < 10 {
             (self.age * self.age) as f32 * 2.0_f32.powf(self.apples_eaten as f32) * ((APPLES_COEFF * self.apples_eaten + 1) as f32)
         } else {
-            (self.age * self.age) as f32 * 2.0_f32.powf(10.0) * (self.apples_eaten - 9) as f32
+            (self.age * self.age) as f32 * 2.0_f32.powf(10.0) * (self.apples_eaten - 9) as f32 * ((APPLES_COEFF * 10) as f32)
         }
-
-       //i32::max(self.age as i32 - 15, 0) as f32
     }
 
     fn create(genom: Vec<f32>) -> Self {
