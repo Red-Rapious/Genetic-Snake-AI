@@ -13,7 +13,7 @@ const MUTATION_CHANCE: f64 = 0.5;
 /// Gaussian Mutation magnitude of mutation
 const MUTATION_COEFF: f32 = 0.5;
 /// The n-th best snakes saved by the genetic algorithm
-const SAVE_BESTS: usize = 10;
+const SAVE_BESTS: usize = 100;
 
 /// How many steps each snake gets to live
 const GENERATION_LENGTH: u32 = 500; 

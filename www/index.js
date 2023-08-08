@@ -7,6 +7,8 @@ import * as gm from "lib-game-wasm";
 const FRAME_DELAY = 0;
 // The number of generations trained by one click on the "Train" button
 const GENERATIONS_TRAIN = 50;
+// Divide the displayed fitness by a big number to avoid showing huge fitnesses
+const FITNESS_UNITS = 10000;
 
 var games = new gm.Games();
 
@@ -135,9 +137,10 @@ function redraw() {
     // Update the labels
     generationLabel.textContent = "Generation: " + games.generation();
     bestScoreLabel.textContent = "Best Score (gen.): " + games.best_score();
-    minFitnessLabel.textContent = "Min. Fitness: " + games.min_fitness();
-    maxFitnessLabel.textContent = "Max. Fitness: " + games.max_fitness();
-    averageFitnessLabel.textContent = "Average Fitness: " + games.avg_fitness();
+
+    minFitnessLabel.textContent = "Min. Fitness: " + Math.round(games.min_fitness() / FITNESS_UNITS);
+    maxFitnessLabel.textContent = "Max. Fitness: " + Math.round(games.max_fitness() / FITNESS_UNITS);
+    averageFitnessLabel.textContent = "Average Fitness: " + Math.round(games.avg_fitness() / FITNESS_UNITS);
 
     if (!gamePaused) {
         setTimeout(function() { requestAnimationFrame(redraw) }, FRAME_DELAY);

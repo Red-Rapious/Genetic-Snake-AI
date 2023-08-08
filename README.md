@@ -23,6 +23,8 @@ The simulation can run in any browser. To try it yourself, you will need:
 - [`wasm-pack`](https://rustwasm.github.io/wasm-pack/installer/), to compile Rust code into WebAssembly
 - [`npm`](https://www.npmjs.com/get-npm) for the front-end simulation
 
+> __Note:__ some packages used seem to conflict with latest `npm` versions. If you encounter any issues, try to change `npm` version using `npm install npm@9.5.0 -g`, and to add the following node option: `export NODE_OPTIONS=--openssl-legacy-provider`.
+
 In the `Genetic-Snake-AI` root folder, start by compiling the Rust code to WebAssembly by running:
 ```console
 $ cd libs/game-wasm
