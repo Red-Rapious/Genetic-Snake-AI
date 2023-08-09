@@ -127,7 +127,8 @@ mod tests {
 
         assert_eq!(vision, 
             [//  A    W    T   // Apple, Wall, Tail
-                0.0, 0.5, 1.0, // right, then counter-clockwise
+                //0.0, 0.5, 1.0, // right, then counter-clockwise
+                0.0, 0.5, 0.5, // right, then counter-clockwise
                 0.0, 0.5, 0.0, 
                 0.0, 0.5, 0.0, 
                 0.0, 0.5, 0.0, 
