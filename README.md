@@ -1,7 +1,7 @@
 # Genetic-Snake-AI
 An Artificial Intelligence to play the game Snake, using a Genetic Algorithm.
 
-![Game banner](assets/game-banner.png)
+<!--![Game banner](assets/game-banner.png)-->
 
 ## About
 The goal is to build a simple Snake game, and to create an artificial intelligence to play the game, and hopefully get high enough scores.
@@ -36,6 +36,8 @@ Then, the next generation is created using three steps:
 On top of that, the best `n` snakes of each generations are saved and added to the next generation without alteration.
 
 ## Results
+![Long play](assets/long-play.gif)
+
 Using the defaults parameters, snakes tend to avoid walls after the 10th generation. Some snakes try to maximise their fitness function through lifetime by moving in circle, but are outperformed by the apple-seeking snakes after the 30th generation or so.
 
 The best snakes of the 50th generations directly move towards apple, and manage to get scores between 15 and 20 in the given 500 maximum moves.
